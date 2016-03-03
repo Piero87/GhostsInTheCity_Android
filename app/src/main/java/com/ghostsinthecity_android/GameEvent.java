@@ -3,14 +3,13 @@ package com.ghostsinthecity_android;
 /**
  * Created by Piero on 02/03/16.
  */
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.ghostsinthecity_android.models.Game;
 
 public interface GameEvent {
 
     void connected ();
 
-    void refreshGameList(JSONArray arr);
+    void refreshGameList(Game[] games_list);
 
-    void openGame(JSONObject game);
+    void openGame(Game game);
 }

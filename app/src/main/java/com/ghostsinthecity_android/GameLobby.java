@@ -8,11 +8,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
@@ -25,6 +23,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+
+import com.ghostsinthecity_android.models.Game;
+import com.ghostsinthecity_android.models.JoinGame;
+import com.ghostsinthecity_android.models.Point;
+import com.google.gson.Gson;
 
 public class GameLobby extends AppCompatActivity implements GameEvent {
 
@@ -71,7 +74,7 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
 
     }
 
-    public void openGame(JSONObject game) {
+    public void openGame(Game game) {
         //Per sicurezza quando entrerò nella partita chiudo il worker per
         //evitare che continui a mandare richieste di list game al server
         worker.shutdown();
@@ -103,78 +106,62 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
     }
 
     @Override
-    public void refreshGameList(JSONArray arr) {
+    public void refreshGameList(Game[] games_list) {
         System.out.println("Ricevuto Lista Partite...");
 
-        final JSONArray t = arr;
+        final Game[] t = games_list;
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 table_layout.removeAllViews();
 
-                if (t.length() != 0) {
-                    for (int i = 0; i < t.length(); i++) {
-                        try {
-                            final JSONObject obj = t.getJSONObject(i);
+                if (t.length != 0) {
+                    for (int i = 0; i < t.length; i++) {
 
-                            try {
-                                if (obj.getString("name").contains("__")) {
+                        final Game game = t[i];
 
-                                    TableRow row = new TableRow(GameLobby.this);
-                                    row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-                                    TextView c1 = new TextView(GameLobby.this);
-                                    c1.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+                        if (game.getName().contains("__")) {
 
-                                    String[] parts;
-                                    try {
+                            TableRow row = new TableRow(GameLobby.this);
+                            row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+                            TextView c1 = new TextView(GameLobby.this);
+                            c1.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
 
-                                        parts = obj.getString("name").split("__");
-                                        String part1 = parts[0];
-                                        String part2 = parts[1];
-                                        String tmp_date = getDate(Long.parseLong(part2));
+                            String[] parts;
 
-                                        c1.setText("Mission created by "+part1+" at "+tmp_date);
-                                        c1.setTextColor(Color.WHITE);
-                                        c1.setTextSize(18);
-                                        row.addView(c1);
-                                        Button btn = new Button(GameLobby.this);
-                                        btn.setText("JOIN");
-                                        btn.setOnClickListener(new View.OnClickListener() {
-                                            public void onClick(View v) {
-                                                System.out.println("Invio Join");
-                                                JSONObject json = new JSONObject();
-                                                try {
+                            parts = game.getName().split("__");
+                            String part1 = parts[0];
+                            String part2 = parts[1];
+                            String tmp_date = getDate(Long.parseLong(part2));
 
-                                                    json.put("event", "join_game");
-                                                    json.put("game", obj);
+                            c1.setText("Mission created by "+part1+" at "+tmp_date);
+                            c1.setTextColor(Color.WHITE);
+                            c1.setTextSize(18);
+                            row.addView(c1);
+                            Button btn = new Button(GameLobby.this);
+                            btn.setText("JOIN");
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    System.out.println("Invio Join");
 
-                                                } catch (JSONException e) {
-                                                    // TODO Auto-generated catch block
-                                                    e.printStackTrace();
-                                                    System.out.println(e.getMessage());
-                                                }
-                                                ConnectionManager.getInstance().sendMessage(json.toString());
-                                            }
-                                        });
-                                        row.addView(btn);
-                                        table_layout.addView(row);
-                                    } catch (JSONException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
+                                    Gson gson = new Gson();
+
+                                    Point p = new Point();
+                                    p.setLatitude(0.0);
+                                    p.setLongitude(0.0);
+
+                                    JoinGame join = new JoinGame();
+                                    join.setEvent("join_game");
+                                    join.setGame(game);
+                                    join.setPos(p);
+
+                                    ConnectionManager.getInstance().sendMessage(gson.toJson(join));
                                 }
-                            } catch (JSONException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-
-                        } catch (JSONException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
+                            });
+                            row.addView(btn);
+                            table_layout.addView(row);
                         }
-
-
                     }
                 }
 

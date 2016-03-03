@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
+
+import com.ghostsinthecity_android.models.Game;
 
 public class MainActivity extends AppCompatActivity implements GameEvent, LocationEvent {
 
@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements GameEvent, Locati
     }
 
     @Override
-    public void refreshGameList(JSONArray arr) {
+    public void refreshGameList(Game[] games_list) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void openGame(JSONObject game) {
+    public void openGame(Game game) {
         // TODO Auto-generated method stub
 
     }

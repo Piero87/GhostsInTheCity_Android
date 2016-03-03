@@ -10,6 +10,9 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
+import com.ghostsinthecity_android.models.Game;
+import com.google.gson.*;
+
 /**
  * Created by Piero on 02/03/16.
  */
@@ -84,10 +87,15 @@ public class ConnectionManager {
                     System.out.println("Chiave: "+obj.getString("event"));
                     if (obj.getString("event").equals("games_list")) {
                         System.out.println("Ricevuto messaggio Lista Partite");
-                        ge.refreshGameList(obj.getJSONArray("list"));
+
+                        Game[] games_list = new Gson().fromJson(obj.getJSONArray("list").toString(), Game[].class);
+
+                        ge.refreshGameList(games_list);
                     } else if (obj.getString("event").equals("game_ready")) {
                         System.out.println("Ricevuto messaggio Game Ready");
-                        ge.openGame(obj.getJSONObject("game"));
+
+                        Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
+                        ge.openGame(game);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

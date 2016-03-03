@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.location.Location;
 
-import org.json.JSONArray;
+import com.ghostsinthecity_android.models.Game;
 import org.json.JSONObject;
 
 public class GameActivity extends AppCompatActivity implements LocationEvent,GameEvent {
@@ -23,12 +23,12 @@ public class GameActivity extends AppCompatActivity implements LocationEvent,Gam
     }
 
     @Override
-    public void refreshGameList(JSONArray arr) {
+    public void refreshGameList(Game[] games_list) {
 
     }
 
     @Override
-    public void openGame(JSONObject game) {
+    public void openGame(Game game) {
 
     }
 
