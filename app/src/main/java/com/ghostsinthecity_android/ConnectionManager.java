@@ -18,7 +18,6 @@ public class ConnectionManager {
     private static ConnectionManager instance = null;
     private GameEvent ge;
 
-    // ciao ciao
     private WebSocketClient webSocket = null;
     public String username;
     public String uid;
