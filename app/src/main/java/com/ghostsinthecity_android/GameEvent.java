@@ -8,9 +8,9 @@ import org.json.JSONObject;
 
 public interface GameEvent {
 
-    public void connected ();
+    void connected ();
 
-    public void refreshGameList(JSONArray arr);
+    void refreshGameList(JSONArray arr);
 
-    public void openGame(JSONObject game);
+    void openGame(JSONObject game);
 }

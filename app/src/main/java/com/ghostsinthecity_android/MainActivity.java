@@ -1,5 +1,6 @@
 package com.ghostsinthecity_android;
 
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 
-public class MainActivity extends AppCompatActivity implements GameEvent {
+public class MainActivity extends AppCompatActivity implements GameEvent, LocationEvent {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements GameEvent {
 
         final Button button = (Button) findViewById(R.id.enter_btn);
         final EditText text_field = (EditText) findViewById(R.id.field_username);
+
+        LocationManager.getInstance().startLocation(this);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements GameEvent {
     @Override
     public void openGame(JSONObject game) {
         // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateLocation(Location location) {
 
     }
 }

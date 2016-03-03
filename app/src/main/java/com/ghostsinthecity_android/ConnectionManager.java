@@ -93,8 +93,6 @@ public class ConnectionManager {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
-
             }
         };
 
