@@ -5,6 +5,7 @@ public class NewGame {
     String event;
     String name;
     int n_players;
+    Point pos;
 
     public String getEvent() {
         return event;
@@ -28,5 +29,13 @@ public class NewGame {
 
     public void setN_players(int n_players) {
         this.n_players = n_players;
+    }
+
+    public Point getPos() {
+        return pos;
+    }
+
+    public void setPos(Point pos) {
+        this.pos = pos;
     }
 }
