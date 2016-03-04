@@ -8,9 +8,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
@@ -26,12 +23,15 @@ import android.widget.TextView;
 
 import com.ghostsinthecity_android.models.Game;
 import com.ghostsinthecity_android.models.JoinGame;
+import com.ghostsinthecity_android.models.NewGame;
 import com.ghostsinthecity_android.models.Point;
+import com.ghostsinthecity_android.models.EventString;
 import com.google.gson.Gson;
 
 public class GameLobby extends AppCompatActivity implements GameEvent {
 
     TableLayout table_layout;
+    EventString games_list_request;
 
     private ScheduledExecutorService worker;
     @Override
@@ -45,22 +45,20 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
         final Button button = (Button) findViewById(R.id.create_btn);
         final EditText text_field = (EditText) findViewById(R.id.n_player_text);
 
+        games_list_request = new EventString();
+        games_list_request.setEvent("games_list");
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
                 if (!text_field.getText().toString().isEmpty()) {
-                    JSONObject json = new JSONObject();
-                    try {
 
-                        json.put("event", "new_game");
-                        json.put("name", ConnectionManager.getInstance().username);
-                        json.put("n_players", Integer.parseInt(text_field.getText().toString()));
+                    NewGame new_game = new NewGame();
+                    new_game.setEvent("new_game");
+                    new_game.setName(ConnectionManager.getInstance().username);
+                    new_game.setN_players(Integer.parseInt(text_field.getText().toString()));
 
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    ConnectionManager.getInstance().sendMessage(json.toString());
+                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(new_game));
                 } else {
                     Builder alert = new AlertDialog.Builder(GameLobby.this);
                     alert.setTitle("Alert");
@@ -84,14 +82,8 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
 
     void requestGameList() {
         System.out.println("Richiedo Lista Partite...");
-        JSONObject json = new JSONObject();
-        try {
-            json.put("event", "games_list");
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        ConnectionManager.getInstance().sendMessage(json.toString());
+
+        ConnectionManager.getInstance().sendMessage(new Gson().toJson(games_list_request));
     }
 
     void timerRequestGamesList() {
@@ -135,7 +127,7 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
                             String part2 = parts[1];
                             String tmp_date = getDate(Long.parseLong(part2));
 
-                            c1.setText("Mission created by "+part1+" at "+tmp_date);
+                            c1.setText(String.format("Mission created by %s at %s", part1, tmp_date));
                             c1.setTextColor(Color.WHITE);
                             c1.setTextSize(18);
                             row.addView(c1);
@@ -144,8 +136,6 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
                             btn.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     System.out.println("Invio Join");
-
-                                    Gson gson = new Gson();
 
                                     Point p = new Point();
                                     p.setLatitude(0.0);
@@ -156,7 +146,7 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
                                     join.setGame(game);
                                     join.setPos(p);
 
-                                    ConnectionManager.getInstance().sendMessage(gson.toJson(join));
+                                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(join));
                                 }
                             });
                             row.addView(btn);

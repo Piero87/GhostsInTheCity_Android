@@ -13,9 +13,6 @@ import java.util.UUID;
 import com.ghostsinthecity_android.models.Game;
 import com.google.gson.*;
 
-/**
- * Created by Piero on 02/03/16.
- */
 public class ConnectionManager {
 
     private static ConnectionManager instance = null;
