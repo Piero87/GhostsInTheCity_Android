@@ -26,10 +26,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Number of Players:"
         android:id="@+id/textView2"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="33dp"
         android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_marginLeft="-100dp" />
+        android:layout_alignParentLeft="true" />
 
     <EditText
         android:layout_width="50dp"
@@ -47,9 +46,9 @@
         android:layout_height="wrap_content"
         android:text="Create"
         android:id="@+id/create_btn"
-        android:layout_alignTop="@+id/n_player_text"
-        android:layout_toRightOf="@+id/n_player_text"
-        android:layout_marginLeft="30dp" />
+        android:layout_alignBottom="@+id/n_player_text"
+        android:layout_toRightOf="@+id/textView6"
+        android:layout_marginLeft="38dp" />
 
     <View
         android:id="@+id/view1"
@@ -81,5 +80,34 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="false"></TableLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Free space meter around you:"
+        android:id="@+id/textView5"
+        android:layout_marginLeft="26dp"
+        android:layout_above="@+id/view1"
+        android:layout_toRightOf="@+id/n_player_text" />
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="10"
+        android:layout_alignTop="@+id/create_btn"
+        android:layout_toRightOf="@+id/textView5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="meter"
+        android:id="@+id/textView6"
+        android:layout_above="@+id/view1"
+        android:layout_toRightOf="@+id/editText" />
 
 </RelativeLayout>

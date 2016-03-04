@@ -1,5 +1,6 @@
 package com.ghostsinthecity_android;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import com.ghostsinthecity_android.models.NewGame;
 import com.ghostsinthecity_android.models.Point;
 import com.ghostsinthecity_android.models.EventString;
 import com.google.gson.Gson;
+import android.location.Location;
 
 public class GameLobby extends AppCompatActivity implements GameEvent {
 
@@ -53,12 +55,38 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
                 // Perform action on click
                 if (!text_field.getText().toString().isEmpty()) {
 
-                    NewGame new_game = new NewGame();
-                    new_game.setEvent("new_game");
-                    new_game.setName(ConnectionManager.getInstance().username);
-                    new_game.setN_players(Integer.parseInt(text_field.getText().toString()));
+                    ProgressDialog mDialog = new ProgressDialog(GameLobby.this);
+                    mDialog.setMessage("Getting Position...");
+                    mDialog.setCancelable(false);
+                    mDialog.show();
 
-                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(new_game));
+                    Location l = LocationManager.getInstance().getLastLocation();
+
+                    if (l == null)
+                    {
+                        mDialog.hide();
+                        Builder alert = new AlertDialog.Builder(GameLobby.this);
+                        alert.setTitle("Alert");
+                        alert.setMessage("Can't retrieve your position");
+                        alert.setPositiveButton("OK",null);
+                        alert.show();
+
+                    } else {
+                        mDialog.hide();
+                        NewGame new_game = new NewGame();
+                        new_game.setEvent("new_game");
+                        new_game.setName(ConnectionManager.getInstance().username);
+                        new_game.setN_players(Integer.parseInt(text_field.getText().toString()));
+
+                        Point p = new Point();
+                        p.setLatitude(l.getLatitude());
+                        p.setLongitude(l.getLongitude());
+
+                        new_game.setPos(p);
+
+                        ConnectionManager.getInstance().sendMessage(new Gson().toJson(new_game));
+                    }
+
                 } else {
                     Builder alert = new AlertDialog.Builder(GameLobby.this);
                     alert.setTitle("Alert");
@@ -137,9 +165,11 @@ public class GameLobby extends AppCompatActivity implements GameEvent {
                                 public void onClick(View v) {
                                     System.out.println("Invio Join");
 
+                                    Location l = LocationManager.getInstance().getLastLocation();
+
                                     Point p = new Point();
-                                    p.setLatitude(0.0);
-                                    p.setLongitude(0.0);
+                                    p.setLatitude(l.getLatitude());
+                                    p.setLongitude(l.getLongitude());
 
                                     JoinGame join = new JoinGame();
                                     join.setEvent("join_game");
