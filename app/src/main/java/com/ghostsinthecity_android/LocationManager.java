@@ -47,9 +47,15 @@ public class LocationManager implements LocationListener {
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         // user defines the criteria
 
+        //high level accurancy to find location
+        criteria.setPowerRequirement(Criteria.POWER_HIGH);
+
+        //get quickly find position using gps if no useless field aren't search
+        criteria.setAltitudeRequired(false);
+
         criteria.setCostAllowed(false);
         // get the best provider depending on the criteria
-        provider = locationManager.getBestProvider(criteria, false);
+        provider = locationManager.getBestProvider(criteria, true);
 
         // the last known location of this provider
         Location location = locationManager.getLastKnownLocation(provider);

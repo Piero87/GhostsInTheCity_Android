@@ -1,6 +1,7 @@
 package com.ghostsinthecity_android;
 
 import android.app.ProgressDialog;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.Calendar;
@@ -30,7 +31,7 @@ import com.ghostsinthecity_android.models.EventString;
 import com.google.gson.Gson;
 import android.location.Location;
 
-public class GameLobby extends AppCompatActivity implements GameEvent {
+public class GameLobby extends FragmentActivity implements GameEvent {
 
     TableLayout table_layout;
     EventString games_list_request;

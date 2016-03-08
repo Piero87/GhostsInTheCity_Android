@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <uses-feature android:name="android.hardware.sensor.accelerometer" />
     <uses-feature android:name="android.hardware.sensor.compass" />
@@ -26,6 +27,8 @@
         <activity android:name=".GameLobby" />
         <activity android:name=".GameActivity" />
         <activity android:name=".TestGPS_AR"></activity>
+        <activity android:name=".DiscoverService"></activity>
+
     </application>
 
 </manifest>

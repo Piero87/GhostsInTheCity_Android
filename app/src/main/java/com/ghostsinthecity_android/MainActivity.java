@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity implements GameEvent, Locatio
                     alert.show();
                 }
                 */
-                Intent i = new Intent(MainActivity.this, TestGPS_AR.class);
+                Intent i = new Intent(MainActivity.this, DiscoverService.class);
                 startActivity(i);
             }
         });
