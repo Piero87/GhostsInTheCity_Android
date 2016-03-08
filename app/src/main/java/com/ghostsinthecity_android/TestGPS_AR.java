@@ -179,8 +179,6 @@ public class TestGPS_AR extends FragmentActivity implements OnClickBeyondarObjec
         mBeyondarFragment.showFPS(true);
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
 
-        
-
         mLocationManager.requestLocationUpdates(provider, 200, 1, this);
     }
 
