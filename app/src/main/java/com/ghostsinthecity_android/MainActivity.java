@@ -1,6 +1,7 @@
 package com.ghostsinthecity_android;
 
 import android.location.Location;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,23 +13,24 @@ import android.content.Intent;
 
 import com.ghostsinthecity_android.models.Game;
 
-public class MainActivity extends AppCompatActivity implements GameEvent, LocationEvent {
+public class MainActivity extends FragmentActivity implements GameEvent, LocationEvent {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
         final Button button = (Button) findViewById(R.id.enter_btn);
         final EditText text_field = (EditText) findViewById(R.id.field_username);
 
-        LocationManager.getInstance().startLocation(this);
+        //LocationManager.getInstance().startLocation(this);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
+                /*
                 if (!text_field.getText().toString().isEmpty()) {
                     System.out.println("Effettuo Login...");
                     ConnectionManager.getInstance().setChangeListener(MainActivity.this);
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements GameEvent, Locati
                     alert.setPositiveButton("OK",null);
                     alert.show();
                 }
+                */
+                Intent i = new Intent(MainActivity.this, TestGPS_AR.class);
+                startActivity(i);
             }
         });
     }

@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile files('libs/java_websocket.jar')
     compile 'com.google.code.gson:gson:2.6.2'
+    compile files('libs/beyondar-v0.9.3.jar')
 }
