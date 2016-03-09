@@ -16,7 +16,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +27,8 @@
         </activity>
         <activity android:name=".GameLobby" />
         <activity android:name=".GameActivity" />
-        <activity android:name=".TestGPS_AR"></activity>
-        <activity android:name=".DiscoverService"></activity>
-
+        <activity android:name=".TestGPS_AR" />
+        <activity android:name=".DiscoveryService"></activity>
     </application>
 
 </manifest>
