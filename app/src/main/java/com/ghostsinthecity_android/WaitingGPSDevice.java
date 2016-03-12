@@ -61,9 +61,10 @@ public class WaitingGPSDevice extends Activity implements LocationEvent {
     public void updateLocation(Location location) {
 
         //E' arrivata la prima posizione vuol dire che posso andare oltre
+        SocketLocation.getInstance().setChangeListener(null);
         Intent i = new Intent(WaitingGPSDevice.this, GameLobby.class);
         startActivity(i);
-        SocketLocation.getInstance().setChangeListener(null);
+
 
     }
 

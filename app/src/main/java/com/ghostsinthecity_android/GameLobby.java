@@ -146,6 +146,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
     public void openGame(Game game) {
         //Per sicurezza quando entrerò nella partita chiudo il worker per
         //evitare che continui a mandare richieste di list game al server
+        ConnectionManager.getInstance().setChangeListener(null);
         worker.shutdown();
         Intent i = new Intent(GameLobby.this, GameActivity.class);
         startActivity(i);

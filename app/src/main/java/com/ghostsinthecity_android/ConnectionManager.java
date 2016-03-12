@@ -87,12 +87,14 @@ public class ConnectionManager {
 
                         Game[] games_list = new Gson().fromJson(obj.getJSONArray("list").toString(), Game[].class);
 
-                        ge.refreshGameList(games_list);
+                        if (ge != null) ge.refreshGameList(games_list);
+
                     } else if (obj.getString("event").equals("game_ready")) {
                         System.out.println("Ricevuto messaggio Game Ready");
 
                         Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
-                        ge.openGame(game);
+
+                        if (ge != null) ge.openGame(game);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

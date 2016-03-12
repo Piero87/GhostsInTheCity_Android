@@ -1,31 +1,54 @@
 package com.ghostsinthecity_android;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
-import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
+import com.ghostsinthecity_android.models.Game;
 
 import java.util.ArrayList;
 
-public class GameActivity extends FragmentActivity implements OnClickBeyondarObjectListener {
+
+
+public class GameActivity extends FragmentActivity implements OnClickBeyondarObjectListener,GameEvent,LocationEvent {
+
+    static class GameStatus {
+        public static final int WAITING = 0;
+        public static final int STARTED = 1;
+        public static final int PAUSED = 2;
+        public static final int FINISHED = 3;
+    }
 
     private BeyondarFragmentSupport mBeyondarFragment;
     private World world;
+    private int gameStatus = GameStatus.WAITING;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_game);
 
-        /*
-        mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
+        ConnectionManager.getInstance().setChangeListener(GameActivity.this);
+        SocketLocation.getInstance().setChangeListener(GameActivity.this);
+
+        mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
+        mBeyondarFragment.setOnClickBeyondarObjectListener(this);
+
+        /*
         world = new World(this);
         world.setGeoPosition(44.236193, 12.071008);
         world.setDefaultImage(R.drawable.beyondar_default_unknow_icon);
@@ -75,12 +98,48 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
 
         mBeyondarFragment.setWorld(world);
-        mBeyondarFragment.setOnClickBeyondarObjectListener(this);*/
+        */
+    }
+
+    @Override
+    public void updateLocation(Location location) {
+
     }
 
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         // The first element in the array belongs to the closest BeyondarObject
         Toast.makeText(this, "Clicked on: " + beyondarObjects.get(0).getName(), Toast.LENGTH_LONG).show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    NON USATI IN QUESTA VISTA MA NON C'E' MODO DI METTERE OPZIONALI QUINDI VANNO MESSI
+    SE NO DA ERRORE
+     */
+    @Override
+    public void connected() {
+
+    }
+
+    @Override
+    public void refreshGameList(Game[] games_list) {
+
+    }
+
+    @Override
+    public void openGame(Game game) {
+
     }
 }
