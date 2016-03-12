@@ -1,7 +1,6 @@
-package com.ghostsinthecity_android;
+package com.ghostsinthecity_android.ToDelete;
 
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Context;
 import android.location.Criteria;
@@ -17,7 +16,8 @@ import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
-import com.beyondar.android.view.CameraView;
+import com.ghostsinthecity_android.R;
+
 import android.hardware.SensorManager;
 import java.util.ArrayList;
 import java.util.List;

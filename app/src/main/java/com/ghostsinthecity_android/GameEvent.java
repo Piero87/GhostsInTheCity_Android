@@ -9,7 +9,7 @@ public interface GameEvent {
 
     void connected ();
 
-    void refreshGameList(Game[] games_list);
+    void refreshGameList(Game [] games_list);
 
     void openGame(Game game);
 }

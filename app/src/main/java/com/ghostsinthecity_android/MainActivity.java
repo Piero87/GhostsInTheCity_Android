@@ -1,7 +1,6 @@
 package com.ghostsinthecity_android;
 
 import android.app.ProgressDialog;
-import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -13,10 +12,9 @@ import android.widget.EditText;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
-
 import com.ghostsinthecity_android.models.Game;
 
-public class MainActivity extends FragmentActivity implements GameEvent, LocationEvent {
+public class MainActivity extends FragmentActivity implements GameEvent {
 
     private static final String TAG = "Ghost_MainActivity";
 
@@ -50,7 +48,7 @@ public class MainActivity extends FragmentActivity implements GameEvent, Locatio
                     Builder alert = new AlertDialog.Builder(MainActivity.this);
                     alert.setTitle("Alert");
                     alert.setMessage("You need to insert a name");
-                    alert.setPositiveButton("OK",null);
+                    alert.setPositiveButton("OK", null);
                     alert.show();
                 }
             }
@@ -81,8 +79,10 @@ public class MainActivity extends FragmentActivity implements GameEvent, Locatio
             mDialog.show();
             requestConnectingWithName("Moverio");
         } else {
-            button.setVisibility(View.VISIBLE);
-            text_field.setVisibility(View.VISIBLE);
+            mDialog.show();
+            requestConnectingWithName("Test");
+            //button.setVisibility(View.VISIBLE);
+            //text_field.setVisibility(View.VISIBLE);
         }
     }
 
@@ -93,7 +93,7 @@ public class MainActivity extends FragmentActivity implements GameEvent, Locatio
             public void run() {
                 // UI code goes here
                 mDialog.hide();
-                Intent i = new Intent(MainActivity.this, DiscoveryService.class);
+                Intent i = new Intent(MainActivity.this, WaitingGPSDevice.class);
                 startActivity(i);
             }
         });
@@ -108,11 +108,6 @@ public class MainActivity extends FragmentActivity implements GameEvent, Locatio
     @Override
     public void openGame(Game game) {
         // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void updateLocation(Location location) {
 
     }
 

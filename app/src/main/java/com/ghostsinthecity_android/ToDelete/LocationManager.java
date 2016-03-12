@@ -1,4 +1,4 @@
-package com.ghostsinthecity_android;
+package com.ghostsinthecity_android.ToDelete;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.provider.Settings;
+
+import com.ghostsinthecity_android.LocationEvent;
 
 /**
  * Created by Piero on 03/03/16.

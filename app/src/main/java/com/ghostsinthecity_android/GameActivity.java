@@ -1,19 +1,16 @@
 package com.ghostsinthecity_android;
 
-import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
+
+import com.beyondar.android.fragment.BeyondarFragmentSupport;
+import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
+import com.beyondar.android.world.GeoObject;
+import com.beyondar.android.world.World;
 
 import java.util.ArrayList;
-import com.beyondar.android.world.World;
-import com.beyondar.android.world.GeoObject;
-import com.beyondar.android.view.OnClickBeyondarObjectListener;
-import android.widget.Toast;
-import com.beyondar.android.fragment.BeyondarFragmentSupport;
-import com.beyondar.android.fragment.BeyondarFragment;
 
 public class GameActivity extends FragmentActivity implements OnClickBeyondarObjectListener {
 
@@ -26,6 +23,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        /*
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
 
         world = new World(this);
@@ -77,7 +75,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
 
         mBeyondarFragment.setWorld(world);
-        mBeyondarFragment.setOnClickBeyondarObjectListener(this);
+        mBeyondarFragment.setOnClickBeyondarObjectListener(this);*/
     }
 
     @Override

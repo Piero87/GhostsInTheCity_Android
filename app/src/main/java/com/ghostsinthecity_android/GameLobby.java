@@ -2,9 +2,11 @@ package com.ghostsinthecity_android;
 
 import android.app.ProgressDialog;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,29 +15,28 @@ import java.util.concurrent.TimeUnit;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
-import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import com.ghostsinthecity_android.ToDelete.CustomAdapterService;
 import com.ghostsinthecity_android.models.Game;
+import com.ghostsinthecity_android.models.GameList;
 import com.ghostsinthecity_android.models.JoinGame;
 import com.ghostsinthecity_android.models.NewGame;
 import com.ghostsinthecity_android.models.Point;
-import com.ghostsinthecity_android.models.EventString;
 import com.google.gson.Gson;
 import android.location.Location;
 
 public class GameLobby extends FragmentActivity implements GameEvent {
 
-    TableLayout table_layout;
-    EventString games_list_request;
+    GameList games_list_request;
+    private ArrayList<Game> gamesList;
+    CustomAdapterService adapter;
 
     private ScheduledExecutorService worker;
     @Override
@@ -48,16 +49,47 @@ public class GameLobby extends FragmentActivity implements GameEvent {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
-
-        table_layout = (TableLayout) findViewById(R.id.games_list);
         worker = Executors.newSingleThreadScheduledExecutor();
         ConnectionManager.getInstance().setChangeListener(GameLobby.this);
 
         final Button button = (Button) findViewById(R.id.create_btn);
         final EditText text_field = (EditText) findViewById(R.id.n_player_text);
+        final EditText text_field2 = (EditText) findViewById(R.id.editText);
 
-        games_list_request = new EventString();
+        ListView listView = (ListView)findViewById(R.id.games_list);
+
+        gamesList = new ArrayList<Game>();
+        adapter = new CustomAdapterService(this, R.layout.row, gamesList);
+        listView.setAdapter(adapter);
+
+
+        AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                System.out.println("Invio Join");
+
+                Location l = SocketLocation.getInstance().getLastLocation();
+
+                Point p = new Point();
+                p.setLatitude(l.getLatitude());
+                p.setLongitude(l.getLongitude());
+
+                JoinGame join = new JoinGame();
+                join.setEvent("join_game");
+                join.setGame(gamesList.get(position));
+                join.setPos(p);
+
+                ConnectionManager.getInstance().sendMessage(new Gson().toJson(join));
+            }
+        };
+
+        listView.setOnItemClickListener(clickListener);
+
+        games_list_request = new GameList();
         games_list_request.setEvent("games_list");
+        games_list_request.setG_type("reality");
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -69,7 +101,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
                     mDialog.setCancelable(false);
                     mDialog.show();
 
-                    Location l = LocationManager.getInstance().getLastLocation();
+                    Location l = SocketLocation.getInstance().getLastLocation();
 
                     if (l == null)
                     {
@@ -86,6 +118,8 @@ public class GameLobby extends FragmentActivity implements GameEvent {
                         new_game.setEvent("new_game");
                         new_game.setName(ConnectionManager.getInstance().username);
                         new_game.setN_players(Integer.parseInt(text_field.getText().toString()));
+                        new_game.setGame_area_edge(Integer.parseInt(text_field2.getText().toString()));
+                        new_game.setGame_type("reality");
 
                         Point p = new Point();
                         p.setLatitude(l.getLatitude());
@@ -135,70 +169,22 @@ public class GameLobby extends FragmentActivity implements GameEvent {
     }
 
     @Override
-    public void refreshGameList(Game[] games_list) {
+    public void refreshGameList(final Game[] games_list) {
         System.out.println("Ricevuto Lista Partite...");
-
-        final Game[] t = games_list;
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                table_layout.removeAllViews();
-
-                if (t.length != 0) {
-                    for (int i = 0; i < t.length; i++) {
-
-                        final Game game = t[i];
-
-                        if (game.getName().contains("__")) {
-
-                            TableRow row = new TableRow(GameLobby.this);
-                            row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-                            TextView c1 = new TextView(GameLobby.this);
-                            c1.setLayoutParams(new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-
-                            String[] parts;
-
-                            parts = game.getName().split("__");
-                            String part1 = parts[0];
-                            String part2 = parts[1];
-                            String tmp_date = getDate(Long.parseLong(part2));
-
-                            c1.setText(String.format("Mission created by %s at %s", part1, tmp_date));
-                            c1.setTextColor(Color.WHITE);
-                            c1.setTextSize(18);
-                            row.addView(c1);
-                            Button btn = new Button(GameLobby.this);
-                            btn.setText("JOIN");
-                            btn.setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    System.out.println("Invio Join");
-
-                                    Location l = LocationManager.getInstance().getLastLocation();
-
-                                    Point p = new Point();
-                                    p.setLatitude(l.getLatitude());
-                                    p.setLongitude(l.getLongitude());
-
-                                    JoinGame join = new JoinGame();
-                                    join.setEvent("join_game");
-                                    join.setGame(game);
-                                    join.setPos(p);
-
-                                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(join));
-                                }
-                            });
-                            row.addView(btn);
-                            table_layout.addView(row);
-                        }
-                    }
-                }
-
+                gamesList.clear();
+                Collections.addAll(gamesList, games_list);
+                adapter.notifyDataSetChanged();
 
                 timerRequestGamesList();
 
             }
         });
+
+
 
     }
 

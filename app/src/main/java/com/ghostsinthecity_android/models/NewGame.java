@@ -6,6 +6,8 @@ public class NewGame {
     String name;
     int n_players;
     Point pos;
+    int game_area_edge;
+    String game_type;
 
     public String getEvent() {
         return event;
@@ -37,5 +39,21 @@ public class NewGame {
 
     public void setPos(Point pos) {
         this.pos = pos;
+    }
+
+    public int getGame_area_edge() {
+        return game_area_edge;
+    }
+
+    public void setGame_area_edge(int game_area_edge) {
+        this.game_area_edge = game_area_edge;
+    }
+
+    public String getGame_type() {
+        return game_type;
+    }
+
+    public void setGame_type(String game_type) {
+        this.game_type = game_type;
     }
 }
