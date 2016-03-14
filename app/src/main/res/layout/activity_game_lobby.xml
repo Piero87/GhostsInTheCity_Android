@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Create New Game"
+        android:text="NEW MISSION"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -20,34 +20,39 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Number of Players:"
+        android:text="PLAYERS :"
         android:id="@+id/textView2"
         android:textColor="#ffffff"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="20dp"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_marginLeft="-50dp" />
+        android:textSize="22dp"
+        android:layout_alignTop="@+id/sub_players"
+        android:layout_toLeftOf="@+id/sub_players"
+        android:layout_marginRight="30dp"
+        android:gravity="center_vertical|center_horizontal" />
 
     <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
         android:id="@+id/n_player_text"
         android:text="2"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignBaseline="@+id/textView2" />
+        android:editable="false"
+        android:gravity="center|center_vertical"
+        android:singleLine="false"
+        android:textSize="20dp"
+        android:inputType="none"
+        android:layout_alignTop="@+id/add_players"
+        android:layout_toLeftOf="@+id/add_players" />
 
     <Button
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:text="Create"
+        android:text="START"
         android:id="@+id/create_btn"
+        android:layout_marginTop="143dp"
+        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="30dp" />
+        android:textSize="20dp" />
 
     <View
         android:id="@+id/view1"
@@ -62,39 +67,54 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Free space meter around you:"
+        android:text="ARENA SIDE METERS :"
         android:id="@+id/textView5"
         android:textColor="#ffffff"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_marginTop="50dp" />
+        android:textSize="22dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/create_btn"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="-"
+        android:id="@+id/sub_meters"
+        android:textSize="30dp"
+        android:layout_toRightOf="@+id/textView5"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_marginLeft="30dp" />
 
     <EditText
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:layout_height="50dp"
+        android:id="@+id/arena_meters"
         android:text="10"
-        android:layout_toRightOf="@+id/textView5"
-        android:layout_marginLeft="30dp"
-        android:layout_alignBaseline="@+id/textView5" />
+        android:gravity="center|center_vertical"
+        android:textSize="22dp"
+        android:layout_toRightOf="@+id/sub_meters"
+        android:layout_alignTop="@+id/sub_meters"
+        android:inputType="none" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="meter"
-        android:id="@+id/textView6"
-        android:textColor="#ffffff"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_toRightOf="@+id/button2" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="+"
+        android:id="@+id/add_meters"
+        android:textSize="30dp"
+        android:layout_alignTop="@+id/arena_meters"
+        android:layout_toRightOf="@+id/arena_meters" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Join Game"
+        android:text="MISSIONS AVAILABLE"
         android:id="@+id/textView3"
         android:layout_below="@+id/view1"
         android:layout_centerHorizontal="true"
@@ -112,21 +132,33 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:text="-"
-        android:id="@+id/button"
-        android:layout_toLeftOf="@+id/n_player_text"
-        android:layout_marginRight="-30dp"
-        android:layout_alignBaseline="@+id/n_player_text" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="+"
+        android:id="@+id/add_players"
+        android:textSize="30dp"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_toLeftOf="@+id/create_btn" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:text="+"
-        android:id="@+id/button2"
-        android:layout_toRightOf="@+id/n_player_text"
-        android:layout_alignBaseline="@+id/n_player_text" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="-"
+        android:id="@+id/sub_players"
+        android:textSize="30dp"
+        android:layout_alignBottom="@+id/n_player_text"
+        android:layout_toLeftOf="@+id/n_player_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="( you will start in the top-right corner )"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/sub_players"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignRight="@+id/add_meters"
+        android:gravity="center_vertical|center_horizontal" />
 
 </RelativeLayout>

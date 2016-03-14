@@ -36,6 +36,8 @@ public class GameLobby extends FragmentActivity implements GameEvent {
     GameList games_list_request;
     private ArrayList<Game> gamesList;
     CustomAdapterService adapter;
+    private int n_players = 2;
+    private int arena_meters = 10;
 
     private ScheduledExecutorService worker;
     @Override
@@ -51,9 +53,47 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         worker = Executors.newSingleThreadScheduledExecutor();
         ConnectionManager.getInstance().setChangeListener(GameLobby.this);
 
-        final Button button = (Button) findViewById(R.id.create_btn);
-        final EditText text_field = (EditText) findViewById(R.id.n_player_text);
-        final EditText text_field2 = (EditText) findViewById(R.id.editText);
+        final Button create_game = (Button) findViewById(R.id.create_btn);
+
+        final EditText n_player_txt = (EditText) findViewById(R.id.n_player_text);
+        n_player_txt.setText(Integer.toString(n_players));
+        final Button sub_player_btn = (Button) findViewById(R.id.sub_players);
+        sub_player_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                if (n_players > 2) {
+                    n_players -= 2;
+                    n_player_txt.setText(Integer.toString(n_players));
+                }
+            }
+        });
+        final Button add_player_btn = (Button) findViewById(R.id.add_players);
+        add_player_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                n_players += 2;
+                n_player_txt.setText(Integer.toString(n_players));
+            }
+        });
+
+        final EditText arena_meters_txt = (EditText) findViewById(R.id.arena_meters);
+        arena_meters_txt.setText(Integer.toString(arena_meters));
+        final Button sub_meters_btn = (Button) findViewById(R.id.sub_meters);
+        sub_meters_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                if (arena_meters > 10) {
+                    arena_meters -= 5;
+                    arena_meters_txt.setText(Integer.toString(arena_meters));
+                }
+            }
+        });
+        final Button add_meters_btn = (Button) findViewById(R.id.add_meters);
+        add_meters_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                arena_meters += 5;
+                arena_meters_txt.setText(Integer.toString(arena_meters));
+            }
+        });
 
         ListView listView = (ListView)findViewById(R.id.games_list);
 
@@ -90,51 +130,35 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         games_list_request.setEvent("games_list");
         games_list_request.setG_type("reality");
 
-        button.setOnClickListener(new View.OnClickListener() {
+        create_game.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                if (!text_field.getText().toString().isEmpty()) {
 
-                    ProgressDialog mDialog = new ProgressDialog(GameLobby.this);
-                    mDialog.setMessage("Getting Position...");
-                    mDialog.setCancelable(false);
-                    mDialog.show();
+                Location l = SocketLocation.getInstance().getLastLocation();
 
-                    Location l = SocketLocation.getInstance().getLastLocation();
-
-                    if (l == null)
-                    {
-                        mDialog.hide();
-                        Builder alert = new AlertDialog.Builder(GameLobby.this);
-                        alert.setTitle("Alert");
-                        alert.setMessage("Can't retrieve your position");
-                        alert.setPositiveButton("OK",null);
-                        alert.show();
-
-                    } else {
-                        mDialog.hide();
-                        NewGame new_game = new NewGame();
-                        new_game.setEvent("new_game");
-                        new_game.setName(ConnectionManager.getInstance().username);
-                        new_game.setN_players(Integer.parseInt(text_field.getText().toString()));
-                        new_game.setGame_area_edge(Integer.parseInt(text_field2.getText().toString()));
-                        new_game.setGame_type("reality");
-
-                        Point p = new Point();
-                        p.setLatitude(l.getLatitude());
-                        p.setLongitude(l.getLongitude());
-
-                        new_game.setPos(p);
-
-                        ConnectionManager.getInstance().sendMessage(new Gson().toJson(new_game));
-                    }
-
-                } else {
+                if (l == null)
+                {
                     Builder alert = new AlertDialog.Builder(GameLobby.this);
                     alert.setTitle("Alert");
-                    alert.setMessage("You need to insert the number of players");
-                    alert.setPositiveButton("OK", null);
+                    alert.setMessage("Can't retrieve your position");
+                    alert.setPositiveButton("OK",null);
                     alert.show();
+
+                } else {
+                    NewGame new_game = new NewGame();
+                    new_game.setEvent("new_game");
+                    new_game.setName(ConnectionManager.getInstance().username);
+                    new_game.setPlayersNumber(Integer.parseInt(Integer.toString(n_players)));
+                    new_game.setArenaSideDimension(Integer.parseInt(Integer.toString(arena_meters)));
+                    new_game.setGameType("reality");
+
+                    Point p = new Point();
+                    p.setLatitude(l.getLatitude());
+                    p.setLongitude(l.getLongitude());
+
+                    new_game.setPos(p);
+
+                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(new_game));
                 }
             }
         });

@@ -25,11 +25,11 @@ public class NewGame {
         this.name = name;
     }
 
-    public int getN_players() {
+    public int getPlayersNumber() {
         return n_players;
     }
 
-    public void setN_players(int n_players) {
+    public void setPlayersNumber(int n_players) {
         this.n_players = n_players;
     }
 
@@ -41,19 +41,19 @@ public class NewGame {
         this.pos = pos;
     }
 
-    public int getGame_area_edge() {
+    public int getArenaSideDimension() {
         return game_area_edge;
     }
 
-    public void setGame_area_edge(int game_area_edge) {
+    public void setArenaSideDimension(int game_area_edge) {
         this.game_area_edge = game_area_edge;
     }
 
-    public String getGame_type() {
+    public String getGameType() {
         return game_type;
     }
 
-    public void setGame_type(String game_type) {
+    public void setGameType(String game_type) {
         this.game_type = game_type;
     }
 }

@@ -10,11 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Waiting device with code"
+        android:text="Waiting for pairing with code"
         android:id="@+id/textView4"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="55dp"
         android:textSize="40dp"
         android:textColor="#ffffff" />
 
@@ -28,19 +28,19 @@
         android:textColor="#ffffff"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="45dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="or connect to IP"
+        android:text="or with IP"
         android:id="@+id/textView8"
         android:textSize="40dp"
         android:textColor="#ffffff"
         android:layout_below="@+id/code_gps"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="45dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,6 +52,6 @@
         android:textColor="#ffffff"
         android:layout_below="@+id/textView8"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="45dp" />
 
 </RelativeLayout>
