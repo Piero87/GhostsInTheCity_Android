@@ -1,9 +1,9 @@
 package com.ghostsinthecity_android.models;
 
-/**
- * Created by andreabuscarini on 03/03/16.
- */
-public class Ghost {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Ghost implements Parcelable {
 
     String uid;
     int level;
@@ -41,4 +41,37 @@ public class Ghost {
     public void setPos(Point pos) {
         this.pos = pos;
     }
+
+    protected Ghost(Parcel in) {
+        uid = in.readString();
+        level = in.readInt();
+        mood = in.readInt();
+        pos = (Point) in.readValue(Point.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeInt(level);
+        dest.writeInt(mood);
+        dest.writeValue(pos);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Ghost> CREATOR = new Parcelable.Creator<Ghost>() {
+        @Override
+        public Ghost createFromParcel(Parcel in) {
+            return new Ghost(in);
+        }
+
+        @Override
+        public Ghost[] newArray(int size) {
+            return new Ghost[size];
+        }
+    };
 }

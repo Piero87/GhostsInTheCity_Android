@@ -148,6 +148,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         ConnectionManager.getInstance().setChangeListener(null);
         worker.shutdown();
         Intent i = new Intent(GameLobby.this, GameActivity.class);
+        i.putExtra("game",game);
         startActivity(i);
     }
 

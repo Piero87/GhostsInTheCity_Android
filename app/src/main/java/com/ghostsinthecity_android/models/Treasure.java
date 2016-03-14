@@ -1,9 +1,9 @@
 package com.ghostsinthecity_android.models;
 
-/**
- * Created by andreabuscarini on 03/03/16.
- */
-public class Treasure {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Treasure implements Parcelable {
 
     String uid;
     int status;
@@ -32,4 +32,35 @@ public class Treasure {
     public void setPos(Point pos) {
         this.pos = pos;
     }
+
+    protected Treasure(Parcel in) {
+        uid = in.readString();
+        status = in.readInt();
+        pos = (Point) in.readValue(Point.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeInt(status);
+        dest.writeValue(pos);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Treasure> CREATOR = new Parcelable.Creator<Treasure>() {
+        @Override
+        public Treasure createFromParcel(Parcel in) {
+            return new Treasure(in);
+        }
+
+        @Override
+        public Treasure[] newArray(int size) {
+            return new Treasure[size];
+        }
+    };
 }

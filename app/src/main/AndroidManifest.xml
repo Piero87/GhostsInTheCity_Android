@@ -27,7 +27,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".GameLobby" />
-        <activity android:name=".GameActivity" />
         <activity android:name=".ToDelete.TestGPS_AR" />
         <activity android:name=".ToDelete.DiscoveryService" />
         <activity android:name=".WaitingGPSDevice"></activity>
