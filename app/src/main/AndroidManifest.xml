@@ -29,7 +29,8 @@
         <activity android:name=".GameLobby" />
         <activity android:name=".ToDelete.TestGPS_AR" />
         <activity android:name=".ToDelete.DiscoveryService" />
-        <activity android:name=".WaitingGPSDevice"></activity>
+        <activity android:name=".WaitingGPSDevice" />
+        <activity android:name=".GameActivity"></activity>
     </application>
 
 </manifest>
