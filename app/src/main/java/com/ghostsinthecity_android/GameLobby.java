@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.ghostsinthecity_android.ToDelete.CustomAdapterService;
 import com.ghostsinthecity_android.models.Game;
 import com.ghostsinthecity_android.models.GameList;
 import com.ghostsinthecity_android.models.JoinGame;

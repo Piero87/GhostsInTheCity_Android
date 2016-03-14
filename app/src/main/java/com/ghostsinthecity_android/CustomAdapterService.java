@@ -1,4 +1,4 @@
-package com.ghostsinthecity_android.ToDelete;
+package com.ghostsinthecity_android;
 
 import android.content.Context;
 import android.graphics.Color;

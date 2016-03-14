@@ -20,6 +20,7 @@ import android.widget.ListView;
 import java.util.Iterator;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.ghostsinthecity_android.CustomAdapterService;
 import com.ghostsinthecity_android.R;
 
 import java.io.InputStream;

@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 import javax.jmdns.JmDNS;
@@ -20,6 +22,8 @@ import android.net.wifi.WifiManager;
 
 import java.net.InetAddress;
 import android.text.format.Formatter;
+
+import org.w3c.dom.Text;
 
 public class WaitingGPSDevice extends Activity implements LocationEvent {
 
@@ -76,8 +80,19 @@ public class WaitingGPSDevice extends Activity implements LocationEvent {
 
                 WifiManager wifi =   (WifiManager) WaitingGPSDevice.this.getSystemService(android.content.Context.WIFI_SERVICE);
 
-                String ip = Formatter.formatIpAddress(wifi.getConnectionInfo().getIpAddress());
-                Log.d(TAG,InetAddress.getByName(ip).toString());
+                String tmp_ip = Formatter.formatIpAddress(wifi.getConnectionInfo().getIpAddress());
+                final String ip = (InetAddress.getByName(tmp_ip).toString()).replace("/", "");
+
+                Log.d(TAG, ip);
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        // UI code goes here
+                        TextView ip_text = (TextView) findViewById(R.id.fuck);
+                        ip_text.setText(ip);
+
+                    }
+                });
 
                 jmdns = JmDNS.create(InetAddress.getByName(ip));
                 jmdns.unregisterAllServices();

@@ -24,8 +24,34 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/code_gps"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:textSize="80dp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="or connect to IP"
+        android:id="@+id/textView8"
+        android:textSize="40dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/code_gps"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/fuck"
+        android:textSize="80dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/textView8"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp" />
+
 </RelativeLayout>
