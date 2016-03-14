@@ -111,6 +111,11 @@ public class MainActivity extends FragmentActivity implements GameEvent {
 
     }
 
+    @Override
+    public void gameStatusChanged(Game game) {
+
+    }
+
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

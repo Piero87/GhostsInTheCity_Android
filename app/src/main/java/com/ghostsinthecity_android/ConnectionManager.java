@@ -95,6 +95,8 @@ public class ConnectionManager {
                         Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
 
                         if (ge != null) ge.openGame(game);
+                    } else if (obj.getString("event").equals("game_status")) {
+
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

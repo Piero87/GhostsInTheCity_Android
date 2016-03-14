@@ -3,6 +3,7 @@ package com.ghostsinthecity_android;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
+
 import com.ghostsinthecity_android.models.Game;
 import android.content.Intent;
 import android.view.Window;
@@ -33,6 +34,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     private BeyondarFragmentSupport mBeyondarFragment;
     private World world;
 
+    private TextView waiting_label;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +52,13 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
 
+
         Intent mIntent  = getIntent();
         currentGame  = (Game )mIntent.getParcelableExtra("game");
 
-        TextView waiting_label = (TextView)findViewById(R.id.waiting_players_label);
+        waiting_label = (TextView) findViewById(R.id.waiting_players_label);
         waiting_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size())+" more players...");
+        waiting_label.setVisibility(View.GONE);
     }
 
 
@@ -70,6 +75,18 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
 
 
+    @Override
+    public void gameStatusChanged(Game game) {
+
+        int old_status = currentGame.getStatus();
+
+        currentGame = game;
+
+        switch (game.getStatus()) {
+
+        }
+
+    }
 
 
     /*
@@ -90,4 +107,5 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void openGame(Game game) {
 
     }
+
 }

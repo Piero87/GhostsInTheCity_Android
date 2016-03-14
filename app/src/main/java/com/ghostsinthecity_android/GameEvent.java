@@ -12,4 +12,6 @@ public interface GameEvent {
     void refreshGameList(Game [] games_list);
 
     void openGame(Game game);
+
+    void gameStatusChanged(Game game);
 }

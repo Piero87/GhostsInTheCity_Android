@@ -141,7 +141,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
                     Builder alert = new AlertDialog.Builder(GameLobby.this);
                     alert.setTitle("Alert");
                     alert.setMessage("Can't retrieve your position");
-                    alert.setPositiveButton("OK",null);
+                    alert.setPositiveButton("OK", null);
                     alert.show();
 
                 } else {
@@ -174,6 +174,11 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         Intent i = new Intent(GameLobby.this, GameActivity.class);
         i.putExtra("game",game);
         startActivity(i);
+    }
+
+    @Override
+    public void gameStatusChanged(Game game) {
+
     }
 
     void requestGameList() {
