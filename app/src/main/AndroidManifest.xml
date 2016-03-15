@@ -9,7 +9,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <!-- Minimum permissions for Beyondar -->
+
+    
     <uses-permission android:name="android.permission.CAMERA" />
+
 
     <!--  BeyondAR needs the following features-->
     <uses-feature android:name="android.hardware.camera" />
