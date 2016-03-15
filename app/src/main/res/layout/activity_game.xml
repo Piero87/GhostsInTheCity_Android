@@ -17,9 +17,78 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Waiting Players..."
-        android:id="@+id/waiting_players_label"
+        android:id="@+id/game_status_label"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textSize="40dp"
         android:textColor="#ffffff" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/coin_icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/coin" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="100"
+        android:id="@+id/coin_label"
+        android:layout_alignBottom="@+id/coin_icon"
+        android:layout_toRightOf="@+id/coin_icon"
+        android:gravity="center_vertical|center_horizontal|left"
+        android:textSize="50dp"
+        android:textColor="#ffd836"
+        android:layout_marginLeft="10dp" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/key_icon"
+        android:src="@drawable/key"
+        android:layout_alignBottom="@+id/coin_label"
+        android:layout_toRightOf="@+id/coin_label" />
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/key_label"
+        android:gravity="center_vertical|center_horizontal|left"
+        android:textSize="50dp"
+        android:textColor="#353535"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/key_icon"
+        android:layout_marginLeft="30dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="YOUR TEAM"
+        android:id="@+id/player_team"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="#ff0000"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hit1"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/hit1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hit2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/hit2" />
 </RelativeLayout>
