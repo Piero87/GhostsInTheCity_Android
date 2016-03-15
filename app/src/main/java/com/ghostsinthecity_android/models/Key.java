@@ -7,6 +7,10 @@ public class Key implements Parcelable {
 
     String uid;
 
+    public Key() {
+
+    }
+
     public String getUid() {
         return uid;
     }
@@ -15,7 +19,7 @@ public class Key implements Parcelable {
         this.uid = uid;
     }
 
-    protected Key(Parcel in) {
+    public Key(Parcel in) {
         uid = in.readString();
     }
 

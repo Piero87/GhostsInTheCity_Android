@@ -18,6 +18,7 @@ public class Game implements Parcelable {
     List<Player> players;
     List<Ghost> ghosts;
     List<Treasure> treasures;
+    List<Trap> traps;
 
     public String getId() {
         return id;
@@ -75,6 +76,18 @@ public class Game implements Parcelable {
         this.treasures = treasures;
     }
 
+    public List<Trap> getTraps() {
+        return traps;
+    }
+
+    public void setTraps(List<Trap> traps) {
+        this.traps = traps;
+    }
+
+    public static Creator<Game> getCREATOR() {
+        return CREATOR;
+    }
+
     protected Game(Parcel in) {
         id = in.readString();
         name = in.readString();
@@ -97,6 +110,12 @@ public class Game implements Parcelable {
             in.readList(treasures, Treasure.class.getClassLoader());
         } else {
             treasures = null;
+        }
+        if (in.readByte() == 0x01) {
+            traps = new ArrayList<Trap>();
+            in.readList(traps, Trap.class.getClassLoader());
+        } else {
+            traps = null;
         }
     }
 
@@ -128,6 +147,12 @@ public class Game implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(treasures);
+        }
+        if (traps == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(traps);
         }
     }
 

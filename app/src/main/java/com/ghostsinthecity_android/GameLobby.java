@@ -7,6 +7,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,9 +26,14 @@ import android.widget.ListView;
 
 import com.ghostsinthecity_android.models.Game;
 import com.ghostsinthecity_android.models.GameList;
+import com.ghostsinthecity_android.models.Ghost;
 import com.ghostsinthecity_android.models.JoinGame;
+import com.ghostsinthecity_android.models.MessageCode;
 import com.ghostsinthecity_android.models.NewGame;
+import com.ghostsinthecity_android.models.Player;
 import com.ghostsinthecity_android.models.Point;
+import com.ghostsinthecity_android.models.Trap;
+import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.Gson;
 import android.location.Location;
 
@@ -178,6 +184,46 @@ public class GameLobby extends FragmentActivity implements GameEvent {
 
     @Override
     public void gameStatusChanged(Game game) {
+
+    }
+
+    @Override
+    public void updatePlayerPosition(Player player) {
+
+    }
+
+    @Override
+    public void updatePlayerInfo(Player player) {
+
+    }
+
+    @Override
+    public void updateGhostsPositions(List<Ghost> ghosts) {
+
+    }
+
+    @Override
+    public void updateTreasures(List<Treasure> treasures) {
+
+    }
+
+    @Override
+    public void addTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void activateTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void removeTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void showMessage(MessageCode msg_code) {
 
     }
 

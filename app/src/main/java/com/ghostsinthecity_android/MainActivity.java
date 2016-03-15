@@ -13,6 +13,13 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import com.ghostsinthecity_android.models.Game;
+import com.ghostsinthecity_android.models.Ghost;
+import com.ghostsinthecity_android.models.MessageCode;
+import com.ghostsinthecity_android.models.Player;
+import com.ghostsinthecity_android.models.Trap;
+import com.ghostsinthecity_android.models.Treasure;
+
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements GameEvent {
 
@@ -31,6 +38,7 @@ public class MainActivity extends FragmentActivity implements GameEvent {
         setContentView(R.layout.activity_main);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+
 
         button  = (Button) findViewById(R.id.enter_btn);
         text_field = (EditText) findViewById(R.id.field_username);
@@ -113,6 +121,46 @@ public class MainActivity extends FragmentActivity implements GameEvent {
 
     @Override
     public void gameStatusChanged(Game game) {
+
+    }
+
+    @Override
+    public void updatePlayerPosition(Player player) {
+
+    }
+
+    @Override
+    public void updatePlayerInfo(Player player) {
+
+    }
+
+    @Override
+    public void updateGhostsPositions(List<Ghost> ghosts) {
+
+    }
+
+    @Override
+    public void updateTreasures(List<Treasure> treasures) {
+
+    }
+
+    @Override
+    public void addTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void activateTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void removeTrap(Trap trap) {
+
+    }
+
+    @Override
+    public void showMessage(MessageCode msg_code) {
 
     }
 

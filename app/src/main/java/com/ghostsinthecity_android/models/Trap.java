@@ -3,11 +3,11 @@ package com.ghostsinthecity_android.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Treasure implements Parcelable {
+public class Trap implements Parcelable {
 
     String uid;
-    int status; //0 Chiuso, 1 Aperto
     Point pos;
+    int status;
 
     public String getUid() {
         return uid;
@@ -15,14 +15,6 @@ public class Treasure implements Parcelable {
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public Point getPos() {
@@ -33,10 +25,18 @@ public class Treasure implements Parcelable {
         this.pos = pos;
     }
 
-    protected Treasure(Parcel in) {
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    protected Trap(Parcel in) {
         uid = in.readString();
-        status = in.readInt();
         pos = (Point) in.readValue(Point.class.getClassLoader());
+        status = in.readInt();
     }
 
     @Override
@@ -47,20 +47,20 @@ public class Treasure implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(uid);
-        dest.writeInt(status);
         dest.writeValue(pos);
+        dest.writeInt(status);
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Treasure> CREATOR = new Parcelable.Creator<Treasure>() {
+    public static final Parcelable.Creator<Trap> CREATOR = new Parcelable.Creator<Trap>() {
         @Override
-        public Treasure createFromParcel(Parcel in) {
-            return new Treasure(in);
+        public Trap createFromParcel(Parcel in) {
+            return new Trap(in);
         }
 
         @Override
-        public Treasure[] newArray(int size) {
-            return new Treasure[size];
+        public Trap[] newArray(int size) {
+            return new Trap[size];
         }
     };
 }

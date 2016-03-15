@@ -10,7 +10,7 @@
 
     <!-- Minimum permissions for Beyondar -->
 
-    
+
     <uses-permission android:name="android.permission.CAMERA" />
 
 

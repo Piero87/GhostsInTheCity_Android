@@ -11,7 +11,13 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 import com.ghostsinthecity_android.models.Game;
+import com.ghostsinthecity_android.models.Ghost;
+import com.ghostsinthecity_android.models.MessageCode;
+import com.ghostsinthecity_android.models.Player;
+import com.ghostsinthecity_android.models.Trap;
+import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.*;
+import java.util.Arrays;
 
 public class ConnectionManager {
 
@@ -97,7 +103,59 @@ public class ConnectionManager {
                         if (ge != null) ge.openGame(game);
                     } else if (obj.getString("event").equals("game_status")) {
 
+                        Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
+
+                        if (ge != null) ge.gameStatusChanged(game);
+
+                    } else if (obj.getString("event").equals("update_player_position")) {
+
+                        Player player = new Gson().fromJson(obj.getJSONObject("player").toString(), Player.class);
+
+                        if (ge != null) ge.updatePlayerPosition(player);
+
+                    } else if (obj.getString("event").equals("update_player_info")) {
+
+                        Player player = new Gson().fromJson(obj.getJSONObject("player").toString(), Player.class);
+
+                        if (ge != null) ge.updatePlayerInfo(player);
+                    } else if (obj.getString("event").equals("update_ghosts_positions")) {
+
+                        Ghost[] ghosts = new Gson().fromJson(obj.getJSONArray("ghosts").toString(), Ghost[].class);
+
+                        if (ge != null) ge.updateGhostsPositions(Arrays.asList(ghosts));
+
+                    } else if (obj.getString("event").equals("update_treasures")) {
+
+                        Treasure[] treasures = new Gson().fromJson(obj.getJSONArray("treasures").toString(), Treasure[].class);
+
+                        if (ge != null) ge.updateTreasures(Arrays.asList(treasures));
+                    } else if (obj.getString("event").equals("new_trap")) {
+
+                        Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
+
+                        if (ge != null) ge.addTrap(trap);
+
+                    } else if (obj.getString("event").equals("active_trap")) {
+
+                        Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
+
+                        if (ge != null) ge.activateTrap(trap);
+                    } else if (obj.getString("event").equals("remove_trap")) {
+
+                        Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
+
+                        if (ge != null) ge.removeTrap(trap);
+                    } else if (obj.getString("event").equals("message")) {
+
+                        MessageCode message = new MessageCode();
+                        message.setCode(Integer.parseInt(obj.getString("code")));
+                        message.setOption(obj.getString("options"));
+
+                        if (ge != null) ge.showMessage(message);
+                    } else if (obj.getString("event").equals("game_results")) {
+                        //### GESTIRE RISULTATI
                     }
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
