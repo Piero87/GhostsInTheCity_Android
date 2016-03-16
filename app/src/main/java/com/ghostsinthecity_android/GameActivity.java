@@ -1,8 +1,12 @@
 package com.ghostsinthecity_android;
 
+import android.app.AlertDialog;
 import android.hardware.SensorManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beyondar.android.world.BeyondarObjectList;
@@ -20,19 +24,21 @@ import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.World;
 import com.ghostsinthecity_android.models.Ghost;
 import com.ghostsinthecity_android.models.MessageCode;
+import com.ghostsinthecity_android.models.NewGame;
 import com.ghostsinthecity_android.models.Player;
 import com.ghostsinthecity_android.models.Point;
 import com.ghostsinthecity_android.models.PositionUpdate;
 import com.ghostsinthecity_android.models.Trap;
 import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.Gson;
-import android.view.MotionEvent;
 
 import java.util.ArrayList;
 import android.location.Location;
 import java.util.List;
 
 import com.ghostsinthecity_android.SimpleGestureFilter.SimpleGestureListener;
+
+import org.w3c.dom.Text;
 
 public class GameActivity extends FragmentActivity implements OnClickBeyondarObjectListener,GameEvent,LocationEvent,SimpleGestureListener {
 
@@ -78,7 +84,16 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     private BeyondarFragmentSupport mBeyondarFragment;
     private World world;
 
-    private TextView waiting_label;
+    private TextView game_status_label;
+    private ImageView coin_icon;
+    private ImageView key_icon;
+    private TextView coin_label;
+    private TextView key_label;
+    private ImageView bam_img;
+    private ImageView pow_img;
+    private TextView team_img;
+    private Button results_btn;
+
     private String my_uid;
 
     private SimpleGestureFilter detector;
@@ -100,14 +115,41 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
 
-
         Intent mIntent  = getIntent();
         currentGame  = (Game)mIntent.getParcelableExtra("game");
 
-            waiting_label = (TextView) findViewById(R.id.waiting_players_label);
-        waiting_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size()) + " more players...");
+        game_status_label = (TextView) findViewById(R.id.game_status_label);
+        coin_icon = (ImageView) findViewById(R.id.coin_icon);
+        key_icon = (ImageView) findViewById(R.id.key_icon);
+        coin_label = (TextView) findViewById(R.id.coin_label);
+        key_label = (TextView) findViewById(R.id.key_label);
+        bam_img = (ImageView) findViewById(R.id.hit2);
+        pow_img = (ImageView) findViewById(R.id.hit1);
+        team_img = (TextView) findViewById(R.id.player_team);
+        results_btn = (Button) findViewById(R.id.results_btn);
 
-            Location l = SocketLocation.getInstance().getLastLocation();
+        results_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                ConnectionManager.getInstance().setChangeListener(null);
+                SocketLocation.getInstance().setChangeListener(null);
+                Intent i = new Intent(GameActivity.this, GameResultsActivity.class);
+                startActivity(i);
+            }
+        });
+
+        coin_icon.setVisibility(View.GONE);
+        key_icon.setVisibility(View.GONE);
+        coin_label.setVisibility(View.GONE);
+        key_label.setVisibility(View.GONE);
+        bam_img.setVisibility(View.GONE);
+        pow_img.setVisibility(View.GONE);
+        team_img.setVisibility(View.GONE);
+        results_btn.setVisibility(View.GONE);
+
+        game_status_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size()) + " more players...");
+
+        Location l = SocketLocation.getInstance().getLastLocation();
 
         world = new World(this);
         world.setGeoPosition(l.getLatitude(), l.getLongitude());
@@ -125,43 +167,49 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     @Override
     public void updateLocation(Location location) {
 
-        world.setGeoPosition(location.getLatitude(), location.getLongitude());
-        //mBeyondarFragment.setWorld(world); //sembra non serva
+        if (currentGame.getStatus() == GameStatus.STARTED) {
 
+            world.setGeoPosition(location.getLatitude(), location.getLongitude());
+            //mBeyondarFragment.setWorld(world); //sembra non serva
 
-        PositionUpdate pos_update = new PositionUpdate();
-        pos_update.setEvent("");
-        Point p = new Point();
-        p.setLatitude(location.getLatitude());
-        p.setLongitude(location.getLongitude());
-        pos_update.setPos(p);
+            PositionUpdate pos_update = new PositionUpdate();
+            pos_update.setEvent("");
+            Point p = new Point();
+            p.setLatitude(location.getLatitude());
+            p.setLongitude(location.getLongitude());
+            pos_update.setPos(p);
 
-        ConnectionManager.getInstance().sendMessage(new Gson().toJson(pos_update));
-
+            ConnectionManager.getInstance().sendMessage(new Gson().toJson(pos_update));
+        }
     }
 
     @Override
     public void onSwipe(int direction) {
 
-        switch (direction) {
-            case SimpleGestureFilter.SWIPE_DOWN:
-                EventString set_trap = new EventString();
-                set_trap.setEvent("set_trap");
-                ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
-                break;
-            case SimpleGestureFilter.SWIPE_UP:
-                EventString open_treasure = new EventString();
-                open_treasure.setEvent("open_treasure");
-                ConnectionManager.getInstance().sendMessage(new Gson().toJson(open_treasure));
-                break;
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            switch (direction) {
+                case SimpleGestureFilter.SWIPE_DOWN:
+                    EventString set_trap = new EventString();
+                    set_trap.setEvent("set_trap");
+                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
+                    break;
+                case SimpleGestureFilter.SWIPE_UP:
+                    EventString open_treasure = new EventString();
+                    open_treasure.setEvent("open_treasure");
+                    ConnectionManager.getInstance().sendMessage(new Gson().toJson(open_treasure));
+                    break;
+            }
         }
     }
 
     @Override
     public void onDoubleTap() {
-        EventString hit_player = new EventString();
-        hit_player.setEvent("hit_player");
-        ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
+
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            EventString hit_player = new EventString();
+            hit_player.setEvent("hit_player");
+            ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
+        }
     }
 
     @Override
@@ -171,52 +219,96 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
 
+    public void updateHUD(Player player) {
 
-    @Override
-    public void gameStatusChanged(Game game) {
+        coin_label.setText(Integer.toString(player.getGold()));
+        key_label.setText(Integer.toString(player.getKeys().size()));
+        team_img.setBackgroundResource(player.getTeam() == Team.RED ? R.drawable.team_red : R.drawable.team_blue);
+    }
 
-        currentGame = game;
-        waiting_label = (TextView) findViewById(R.id.waiting_players_label);
+    public void startGame() {
 
-        switch (game.getStatus()) {
-            case GameStatus.STARTED:
-                initializeWorld();
-                waiting_label.setVisibility(View.GONE);
+        game_status_label.setVisibility(View.GONE);
+        coin_icon.setVisibility(View.VISIBLE);
+        key_icon.setVisibility(View.VISIBLE);
+
+        for (Player player : currentGame.getPlayers()) {
+
+            if (player.getUid().equals(my_uid))
+            {
+                updateHUD(player);
                 break;
-            case GameStatus.WAITING:
-                waiting_label.setText("Game Paused");
-                waiting_label.setVisibility(View.VISIBLE);
-                break;
-                //### Bloccare thread update fantasmi, oppure lasciarlo così come e semplicemente nascondere la vista
-            case GameStatus.FINISHED:
-                waiting_label.setVisibility(View.VISIBLE);
-                waiting_label.setText("Game Finished");
-                break;
-                //### Bloccare thread chiudere connessioni
+            }
         }
+
+        coin_label.setVisibility(View.VISIBLE);
+        key_label.setVisibility(View.VISIBLE);
+        team_img.setVisibility(View.VISIBLE);
+
+        initializeWorld();
+    }
+
+    public void pauseGame() {
+
+        game_status_label.setText("Game Paused");
+        game_status_label.setVisibility(View.VISIBLE);
+
+        world.clearWorld();
+    }
+
+    public void gameFinished() {
+        results_btn.setVisibility(View.VISIBLE);
+        game_status_label.setVisibility(View.VISIBLE);
+        game_status_label.setText("Game Finished");
+        world.clearWorld();
+    }
+    @Override
+    public void gameStatusChanged(final Game game) {
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // UI code goes here
+                currentGame = game;
+
+                switch (game.getStatus()) {
+                    case GameStatus.STARTED:
+                        startGame();
+                        break;
+                    case GameStatus.WAITING:
+                        pauseGame();
+                        break;
+                    case GameStatus.FINISHED:
+                        gameFinished();
+                        break;
+                }
+            }
+        });
+
     }
 
     @Override
     public void updatePlayerPosition(Player player) {
 
-        for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
+        if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            if (playerObject.getName().equals(player.getUid())) {
+            for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
 
-                world.remove(playerObject);
+                if (playerObject.getName().equals(player.getUid())) {
 
-                initializePlayer(player);
+                    world.remove(playerObject);
 
-                for (Player current_player : currentGame.getPlayers()) {
+                    initializePlayer(player);
 
-                    if (current_player.getUid().equals(player.getUid()))
-                    {
-                        current_player.setPos(player.getPos());
-                        break;
+                    for (Player current_player : currentGame.getPlayers()) {
+
+                        if (current_player.getUid().equals(player.getUid())) {
+                            current_player.setPos(player.getPos());
+                            break;
+                        }
                     }
-                }
 
-                break;
+                    break;
+                }
             }
         }
     }
@@ -224,128 +316,149 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     @Override
     public void updatePlayerInfo(Player player) {
 
-        for (Player current_player : currentGame.getPlayers()) {
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (Player current_player : currentGame.getPlayers()) {
 
-            if (current_player.getUid().equals(player.getUid()))
-            {
-                current_player.setPos(player.getPos());
-                //### aggiornare valori HUD
-                break;
+                if (current_player.getUid().equals(player.getUid()))
+                {
+                    current_player.setPos(player.getPos());
+                    updateHUD(current_player);
+                    break;
+                }
             }
         }
+
     }
 
     @Override
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
-        for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.GHOST)) {
-            world.remove(ghostObject);
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.GHOST)) {
+                world.remove(ghostObject);
+            }
+
+            initializeGhosts(ghosts);
         }
 
-        initializeGhosts(ghosts);
 
     }
 
     @Override
     public void updateTreasures(List<Treasure> treasures) {
 
-        for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.TREASURE)) {
-            world.remove(ghostObject);
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.TREASURE)) {
+                world.remove(ghostObject);
+            }
+
+            initializeTreasures(treasures);
         }
 
-        initializeTreasures(treasures);
     }
 
     @Override
     public void addTrap(Trap trap) {
 
-        initializeTrap(trap,TrapStatus.UNACTIVE);
-        currentGame.getTraps().add(trap);
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            initializeTrap(trap, TrapStatus.UNACTIVE);
+            currentGame.getTraps().add(trap);
+        }
+
     }
 
     @Override
     public void activateTrap(Trap trap) {
 
-        for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
 
-            if (trapObject.getName().equals(trap.getUid())) {
-                world.remove(trapObject);
-                initializeTrap(trap, TrapStatus.ACTIVE);
+                if (trapObject.getName().equals(trap.getUid())) {
+                    world.remove(trapObject);
+                    initializeTrap(trap, TrapStatus.ACTIVE);
 
-                for (Trap current_trap : currentGame.getTraps()) {
+                    for (Trap current_trap : currentGame.getTraps()) {
 
-                    if (current_trap.getUid().equals(trap.getUid()))
-                    {
-                        current_trap.setStatus(TrapStatus.ACTIVE);
-                        break;
+                        if (current_trap.getUid().equals(trap.getUid()))
+                        {
+                            current_trap.setStatus(TrapStatus.ACTIVE);
+                            break;
+                        }
                     }
-                }
 
-                break;
+                    break;
+                }
             }
         }
+
     }
 
     @Override
     public void removeTrap(Trap trap) {
 
-        for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
 
-            if (trapObject.getName().equals(trap.getUid())) {
-                world.remove(trapObject);
+                if (trapObject.getName().equals(trap.getUid())) {
+                    world.remove(trapObject);
 
-                for (Trap current_trap : currentGame.getTraps()) {
+                    for (Trap current_trap : currentGame.getTraps()) {
 
-                    if (current_trap.getUid().equals(trap.getUid()))
-                    {
-                        currentGame.getTraps().remove(current_trap);
-                        break;
+                        if (current_trap.getUid().equals(trap.getUid()))
+                        {
+                            currentGame.getTraps().remove(current_trap);
+                            break;
+                        }
                     }
-                }
 
-                break;
+                    break;
+                }
             }
         }
+
     }
 
     @Override
     public void showMessage(MessageCode msg_code) {
 
-        switch (msg_code.getCode()) {
-            case -1:
-                Toast.makeText(this, "You cannot set a trap!", Toast.LENGTH_LONG).show();
-                break;
-            case -2:
-                Toast.makeText(this, "Come inside, quick, you'll catch a cold out there!", Toast.LENGTH_LONG).show();
-                break;
-            case -3:
-                Toast.makeText(this, "This treasure is locked and you don't have the right key.", Toast.LENGTH_LONG).show();
-                break;
-            case -4:
-                Toast.makeText(this, "Some moron leaved the mission and has not come back in time...", Toast.LENGTH_LONG).show();
-                break;
-            case -5:
-                Toast.makeText(this, "oh oh, there's nothing here.", Toast.LENGTH_LONG).show();
-                break;
-            case 1:
-                Toast.makeText(this, "Ghost Attack! You lost " + msg_code.getOption() + "$!", Toast.LENGTH_LONG).show();
-                break;
-            case 2:
-                Toast.makeText(this, "Ouch!", Toast.LENGTH_LONG).show();
-                break;
-            case 3:
-                Toast.makeText(this, "You have found a key! Yay!", Toast.LENGTH_LONG).show();
-                break;
-            case 4:
-                Toast.makeText(this, "You have found " + msg_code.getOption() + "$! You are filthy rich now!", Toast.LENGTH_LONG).show();
-                break;
-            case 5:
-                Toast.makeText(this, "Jackpot! " + msg_code.getOption() + "$ and a key!", Toast.LENGTH_LONG).show();
-                break;
-            case 7:
-                Toast.makeText(this, "Your team won this game! Congratulations!", Toast.LENGTH_LONG).show();
-                break;
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            switch (msg_code.getCode()) {
+                case -1:
+                    Toast.makeText(this, "You cannot set a trap!", Toast.LENGTH_LONG).show();
+                    break;
+                case -2:
+                    Toast.makeText(this, "Come inside, quick, you'll catch a cold out there!", Toast.LENGTH_LONG).show();
+                    break;
+                case -3:
+                    Toast.makeText(this, "This treasure is locked and you don't have the right key.", Toast.LENGTH_LONG).show();
+                    break;
+                case -4:
+                    Toast.makeText(this, "Some moron leaved the mission and has not come back in time...", Toast.LENGTH_LONG).show();
+                    break;
+                case -5:
+                    Toast.makeText(this, "oh oh, there's nothing here.", Toast.LENGTH_LONG).show();
+                    break;
+                case 1:
+                    Toast.makeText(this, "Ghost Attack! You lost " + msg_code.getOption() + "$!", Toast.LENGTH_LONG).show();
+                    break;
+                case 2:
+                    Toast.makeText(this, "Ouch!", Toast.LENGTH_LONG).show();
+                    break;
+                case 3:
+                    Toast.makeText(this, "You have found a key! Yay!", Toast.LENGTH_LONG).show();
+                    break;
+                case 4:
+                    Toast.makeText(this, "You have found " + msg_code.getOption() + "$! You are filthy rich now!", Toast.LENGTH_LONG).show();
+                    break;
+                case 5:
+                    Toast.makeText(this, "Jackpot! " + msg_code.getOption() + "$ and a key!", Toast.LENGTH_LONG).show();
+                    break;
+                case 7:
+                    Toast.makeText(this, "Your team won this game! Congratulations!", Toast.LENGTH_LONG).show();
+                    break;
+            }
         }
+
     }
 
     public void initializeGhosts(List<Ghost> ghosts) {

@@ -91,4 +91,12 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/hit2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Results"
+        android:id="@+id/results_btn"
+        android:layout_below="@+id/hit1"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

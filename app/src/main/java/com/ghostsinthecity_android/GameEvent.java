@@ -34,4 +34,5 @@ public interface GameEvent {
     void removeTrap(Trap trap);
 
     void showMessage(MessageCode msg_code);
+
 }

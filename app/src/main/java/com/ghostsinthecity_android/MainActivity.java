@@ -65,7 +65,8 @@ public class MainActivity extends FragmentActivity implements GameEvent {
 
     public void requestConnectingWithName(String username) {
         ConnectionManager.getInstance().setChangeListener(MainActivity.this);
-        ConnectionManager.getInstance().openWebSocket(username);
+        ConnectionManager.getInstance().initializeAccount(username);
+        ConnectionManager.getInstance().openWebSocket();
     }
 
     @Override

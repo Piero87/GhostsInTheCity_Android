@@ -1,5 +1,7 @@
 package com.ghostsinthecity_android;
 
+import android.location.Location;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -11,9 +13,13 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 import com.ghostsinthecity_android.models.Game;
+import com.ghostsinthecity_android.models.GameResults;
 import com.ghostsinthecity_android.models.Ghost;
 import com.ghostsinthecity_android.models.MessageCode;
 import com.ghostsinthecity_android.models.Player;
+import com.ghostsinthecity_android.models.Point;
+import com.ghostsinthecity_android.models.PositionUpdate;
+import com.ghostsinthecity_android.models.ResumeGame;
 import com.ghostsinthecity_android.models.Trap;
 import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.*;
@@ -27,6 +33,8 @@ public class ConnectionManager {
     private WebSocketClient webSocket = null;
     public String username;
     public String uid;
+    public String game_uid;
+    public GameResults game_result = null;
 
     protected ConnectionManager() {
     }
@@ -44,20 +52,24 @@ public class ConnectionManager {
         return instance;
     }
 
+    public void initializeAccount(String username) {
+
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.substring(0, 8);
+        this.username = username;
+        this.uid = uuid;
+        this.game_uid = "";
+    }
     public void setChangeListener(GameEvent listener) {
         this.ge = listener;
     }
 
-    public void openWebSocket(String username) {
-
-        String uuid = UUID.randomUUID().toString();
-        uuid = uuid.substring(0, 8);
-        this.uid = uuid;
-        this.username = username;
+    public void openWebSocket() {
 
         URI uri;
         try {
-            uri = new URI("ws://ghosts-in-the-city.herokuapp.com/login/"+username+"/"+uuid);
+            //uri = new URI("ws://ghosts-in-the-city.herokuapp.com/login/"+username+"/"+uid);
+            uri = new URI("ws://192.168.1.112/login/"+username+"/"+uid);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -67,14 +79,33 @@ public class ConnectionManager {
 
             public void onOpen(ServerHandshake serverHandshake) {
                 System.out.println("Websocket opened");
-                if (ge != null) {
+                if (ge != null && game_uid.equals("")) {
                     ge.connected();
+                } else if (ge != null && !game_uid.equals("")) {
+
+                    //C'era una partita in corso spedisco un resume
+                    ResumeGame resume = new ResumeGame();
+                    resume.setEvent("resume_game");
+
+                    Location l = SocketLocation.getInstance().getLastLocation();
+
+                    PositionUpdate pos_update = new PositionUpdate();
+                    pos_update.setEvent("");
+                    Point p = new Point();
+                    p.setLatitude(l.getLatitude());
+                    p.setLongitude(l.getLongitude());
+
+                    resume.setPos(p);
+                    resume.setGame_id(game_uid);
+
+                    sendMessage(new Gson().toJson(resume));
                 }
             }
 
             @Override
             public void onClose(int i, String s, boolean b) {
                 System.out.println("Websocket closed: "+s);
+                openWebSocket();
             }
 
             @Override
@@ -99,6 +130,8 @@ public class ConnectionManager {
                         System.out.println("Ricevuto messaggio Game Ready");
 
                         Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
+                        game_uid = game.getId();
+                        game_result = null;
 
                         if (ge != null) ge.openGame(game);
                     } else if (obj.getString("event").equals("game_status")) {
@@ -148,12 +181,19 @@ public class ConnectionManager {
                     } else if (obj.getString("event").equals("message")) {
 
                         MessageCode message = new MessageCode();
-                        message.setCode(Integer.parseInt(obj.getString("code")));
+                        message.setCode(obj.getInt("code"));
                         message.setOption(obj.getString("options"));
 
                         if (ge != null) ge.showMessage(message);
                     } else if (obj.getString("event").equals("game_results")) {
-                        //### GESTIRE RISULTATI
+
+                        game_uid = "";
+                        GameResults game_results_tmp = new GameResults();
+                        game_results_tmp.setTeam(obj.getInt("team"));
+                        Player[] players = new Gson().fromJson(obj.getJSONArray("players").toString(), Player[].class);
+                        game_results_tmp.setPlayers(Arrays.asList(players));
+
+                        game_result = game_results_tmp;
                     }
 
                 } catch (JSONException e) {
