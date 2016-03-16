@@ -15,6 +15,7 @@ public class Game implements Parcelable {
     String name;
     int n_players;
     int status;
+    String g_type;
     List<Player> players;
     List<Ghost> ghosts;
     List<Treasure> treasures;
@@ -52,6 +53,14 @@ public class Game implements Parcelable {
         this.status = status;
     }
 
+    public String getG_type() {
+        return g_type;
+    }
+
+    public void setG_type(String g_type) {
+        this.g_type = g_type;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -84,6 +93,7 @@ public class Game implements Parcelable {
         this.traps = traps;
     }
 
+
     public static Creator<Game> getCREATOR() {
         return CREATOR;
     }
@@ -93,6 +103,7 @@ public class Game implements Parcelable {
         name = in.readString();
         n_players = in.readInt();
         status = in.readInt();
+        g_type = in.readString();
         if (in.readByte() == 0x01) {
             players = new ArrayList<Player>();
             in.readList(players, Player.class.getClassLoader());
@@ -130,6 +141,7 @@ public class Game implements Parcelable {
         dest.writeString(name);
         dest.writeInt(n_players);
         dest.writeInt(status);
+        dest.writeString(g_type);
         if (players == null) {
             dest.writeByte((byte) (0x00));
         } else {
