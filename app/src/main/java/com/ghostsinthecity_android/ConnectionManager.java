@@ -69,7 +69,7 @@ public class ConnectionManager {
         URI uri;
         try {
             //uri = new URI("ws://ghosts-in-the-city.herokuapp.com/login/"+username+"/"+uid);
-            uri = new URI("ws://192.168.1.112/login/"+username+"/"+uid);
+            uri = new URI("ws://192.168.1.112:9000/login/"+username+"/"+uid);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
