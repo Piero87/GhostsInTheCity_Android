@@ -43,7 +43,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
     private ArrayList<Game> gamesList;
     CustomAdapterService adapter;
     private int n_players = 2;
-    private int arena_meters = 10;
+    private int arena_meters = 20;
 
     private ScheduledExecutorService worker;
     @Override
@@ -87,7 +87,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         sub_meters_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                if (arena_meters > 10) {
+                if (arena_meters > 20) {
                     arena_meters -= 5;
                     arena_meters_txt.setText(Integer.toString(arena_meters));
                 }
