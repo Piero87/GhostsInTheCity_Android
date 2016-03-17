@@ -128,7 +128,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         pow_img = (ImageView) findViewById(R.id.hit1);
         team_img = (TextView) findViewById(R.id.player_team);
         results_btn = (Button) findViewById(R.id.results_btn);
-        results_btn = (Button) findViewById(R.id.leave_btn);
+        leave_btn = (Button) findViewById(R.id.leave_btn);
 
         results_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
