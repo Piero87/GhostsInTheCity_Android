@@ -99,4 +99,12 @@
         android:id="@+id/results_btn"
         android:layout_below="@+id/hit1"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="LEAVE"
+        android:id="@+id/leave_btn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

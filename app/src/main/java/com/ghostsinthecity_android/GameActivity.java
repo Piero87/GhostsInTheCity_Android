@@ -93,6 +93,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     private ImageView pow_img;
     private TextView team_img;
     private Button results_btn;
+    private Button leave_btn;
 
     private String my_uid;
 
@@ -127,6 +128,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         pow_img = (ImageView) findViewById(R.id.hit1);
         team_img = (TextView) findViewById(R.id.player_team);
         results_btn = (Button) findViewById(R.id.results_btn);
+        results_btn = (Button) findViewById(R.id.leave_btn);
 
         results_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -134,6 +136,21 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                 ConnectionManager.getInstance().setChangeListener(null);
                 SocketLocation.getInstance().setChangeListener(null);
                 Intent i = new Intent(GameActivity.this, GameResultsActivity.class);
+                startActivity(i);
+            }
+        });
+
+        leave_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                ConnectionManager.getInstance().setChangeListener(null);
+                SocketLocation.getInstance().setChangeListener(null);
+
+                EventString leave_game_request = new EventString();
+                leave_game_request.setEvent("leave_game");
+                ConnectionManager.getInstance().sendMessage(new Gson().toJson(leave_game_request));
+
+                Intent i = new Intent(GameActivity.this, GameLobby.class);
                 startActivity(i);
             }
         });
