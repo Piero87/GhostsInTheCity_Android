@@ -227,6 +227,16 @@ public class GameLobby extends FragmentActivity implements GameEvent {
 
     }
 
+    @Override
+    public void updateVisibleTraps(List<Trap> traps) {
+
+    }
+
+    @Override
+    public void updateVisiblePlayers(List<Player> players) {
+
+    }
+
     void requestGameList() {
         System.out.println("Richiedo Lista Partite...");
 

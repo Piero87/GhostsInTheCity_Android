@@ -165,6 +165,16 @@ public class MainActivity extends FragmentActivity implements GameEvent {
 
     }
 
+    @Override
+    public void updateVisibleTraps(List<Trap> traps) {
+
+    }
+
+    @Override
+    public void updateVisiblePlayers(List<Player> players) {
+
+    }
+
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
