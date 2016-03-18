@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity implements GameEvent {
             public void run() {
                 // UI code goes here
                 mDialog.hide();
-                Intent i = new Intent(MainActivity.this, WaitingGPSDevice.class);
+                Intent i = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(i);
             }
         });

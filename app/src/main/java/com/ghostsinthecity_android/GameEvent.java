@@ -35,4 +35,8 @@ public interface GameEvent {
 
     void showMessage(MessageCode msg_code);
 
+    void updateVisibleTraps(List<Trap> traps);
+
+    void updateVisiblePlayers(List<Player> players);
+
 }

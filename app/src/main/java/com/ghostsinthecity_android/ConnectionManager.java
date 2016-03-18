@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
+import com.ghostsinthecity_android.models.EventString;
 import com.ghostsinthecity_android.models.Game;
 import com.ghostsinthecity_android.models.GameResults;
 import com.ghostsinthecity_android.models.Ghost;
@@ -24,6 +25,7 @@ import com.ghostsinthecity_android.models.Trap;
 import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.*;
 import java.util.Arrays;
+import android.os.Handler;
 
 public class ConnectionManager {
 
@@ -35,6 +37,8 @@ public class ConnectionManager {
     public String uid;
     public String game_uid;
     public GameResults game_result = null;
+
+    private Handler handler;
 
     protected ConnectionManager() {
     }
@@ -59,6 +63,7 @@ public class ConnectionManager {
         this.username = username;
         this.uid = uuid;
         this.game_uid = "";
+        handler = new Handler();
     }
     public void setChangeListener(GameEvent listener) {
         this.ge = listener;
@@ -68,8 +73,9 @@ public class ConnectionManager {
 
         URI uri;
         try {
-            //uri = new URI("ws://ghosts-in-the-city.herokuapp.com/login/"+username+"/"+uid);
-            uri = new URI("ws://192.168.1.112:9000/login/"+username+"/"+uid);
+            uri = new URI("ws://ghosts-in-the-city.herokuapp.com/login/"+username+"/"+uid);
+            //uri = new URI("ws://192.168.1.112:9000/login/"+username+"/"+uid);
+            //uri = new URI("ws://192.168.1.108:9000/login/"+username+"/"+uid);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -79,6 +85,7 @@ public class ConnectionManager {
 
             public void onOpen(ServerHandshake serverHandshake) {
                 System.out.println("Websocket opened");
+                handler.postDelayed(pingRunnable, 20000);
                 if (ge != null && game_uid.equals("")) {
                     ge.connected();
                 } else if (ge != null && !game_uid.equals("")) {
@@ -105,6 +112,7 @@ public class ConnectionManager {
             @Override
             public void onClose(int i, String s, boolean b) {
                 System.out.println("Websocket closed: "+s);
+                handler.removeCallbacks(pingRunnable);
                 openWebSocket();
             }
 
@@ -151,7 +159,20 @@ public class ConnectionManager {
                         Player player = new Gson().fromJson(obj.getJSONObject("player").toString(), Player.class);
 
                         if (ge != null) ge.updatePlayerInfo(player);
+
+                    } else if (obj.getString("event").equals("visible_players")) {
+
+                        Player[] players = new Gson().fromJson(obj.getJSONObject("players").toString(), Player[].class);
+
+                        if (ge != null) ge.updateVisiblePlayers(Arrays.asList(players));
+
                     } else if (obj.getString("event").equals("update_ghosts_positions")) {
+
+                        Ghost[] ghosts = new Gson().fromJson(obj.getJSONArray("ghosts").toString(), Ghost[].class);
+
+                        if (ge != null) ge.updateGhostsPositions(Arrays.asList(ghosts));
+
+                    } else if (obj.getString("event").equals("visible_ghosts")) {
 
                         Ghost[] ghosts = new Gson().fromJson(obj.getJSONArray("ghosts").toString(), Ghost[].class);
 
@@ -162,6 +183,13 @@ public class ConnectionManager {
                         Treasure[] treasures = new Gson().fromJson(obj.getJSONArray("treasures").toString(), Treasure[].class);
 
                         if (ge != null) ge.updateTreasures(Arrays.asList(treasures));
+
+                    } else if (obj.getString("event").equals("visible_treasures")) {
+
+                        Treasure[] treasures = new Gson().fromJson(obj.getJSONArray("treasures").toString(), Treasure[].class);
+
+                        if (ge != null) ge.updateTreasures(Arrays.asList(treasures));
+
                     } else if (obj.getString("event").equals("new_trap")) {
 
                         Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
@@ -173,11 +201,19 @@ public class ConnectionManager {
                         Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
 
                         if (ge != null) ge.activateTrap(trap);
+
                     } else if (obj.getString("event").equals("remove_trap")) {
 
                         Trap trap = new Gson().fromJson(obj.getJSONObject("trap").toString(), Trap.class);
 
                         if (ge != null) ge.removeTrap(trap);
+
+                    } else if (obj.getString("event").equals("visible_traps")) {
+
+                        Trap[] traps = new Gson().fromJson(obj.getJSONArray("traps").toString(), Trap[].class);
+
+                        if (ge != null) ge.updateVisibleTraps(Arrays.asList(traps));
+
                     } else if (obj.getString("event").equals("message")) {
 
                         MessageCode message = new MessageCode();
@@ -210,4 +246,16 @@ public class ConnectionManager {
         System.out.println("Richiesta invio messaggio...");
         webSocket.send(json);
     }
+
+    private Runnable pingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            EventString ping = new EventString();
+            ping.setEvent("ping");
+
+            sendMessage(new Gson().toJson(ping));
+
+            handler.postDelayed(this, 20000);
+        }
+    };
 }

@@ -9,11 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beyondar.android.world.BeyondarObjectList;
 import com.beyondar.android.world.GeoObject;
 import com.ghostsinthecity_android.models.EventString;
 import com.ghostsinthecity_android.models.Game;
-import android.content.Intent;
 import android.view.Window;
 import android.view.View;
 import android.widget.Toast;
@@ -24,7 +22,6 @@ import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.World;
 import com.ghostsinthecity_android.models.Ghost;
 import com.ghostsinthecity_android.models.MessageCode;
-import com.ghostsinthecity_android.models.NewGame;
 import com.ghostsinthecity_android.models.Player;
 import com.ghostsinthecity_android.models.Point;
 import com.ghostsinthecity_android.models.PositionUpdate;
@@ -38,7 +35,8 @@ import java.util.List;
 
 import com.ghostsinthecity_android.SimpleGestureFilter.SimpleGestureListener;
 
-import org.w3c.dom.Text;
+import android.view.MotionEvent;
+import android.content.Intent;
 
 public class GameActivity extends FragmentActivity implements OnClickBeyondarObjectListener,GameEvent,LocationEvent,SimpleGestureListener {
 
@@ -108,6 +106,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         setContentView(R.layout.activity_game);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+
 
         ConnectionManager.getInstance().setChangeListener(GameActivity.this);
         SocketLocation.getInstance().setChangeListener(GameActivity.this);
@@ -230,6 +229,14 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent me) {
+        // Call onTouchEvent of SimpleGestureFilter class
+        this.detector.onTouchEvent(me);
+
+        return super.dispatchTouchEvent(me);
+    }
+
+    @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         // The first element in the array belongs to the closest BeyondarObject
         Toast.makeText(this, "Clicked on: " + beyondarObjects.get(0).getName(), Toast.LENGTH_LONG).show();
@@ -262,7 +269,19 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         key_label.setVisibility(View.VISIBLE);
         team_img.setVisibility(View.VISIBLE);
 
-        initializeWorld();
+        world.clearWorld();
+
+        PositionUpdate pos_update = new PositionUpdate();
+        pos_update.setEvent("");
+        Point p = new Point();
+
+        Location l = SocketLocation.getInstance().getLastLocation();
+
+        p.setLatitude(l.getLatitude());
+        p.setLongitude(l.getLongitude());
+        pos_update.setPos(p);
+
+        ConnectionManager.getInstance().sendMessage(new Gson().toJson(pos_update));
     }
 
     public void pauseGame() {
@@ -279,6 +298,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         game_status_label.setText("Game Finished");
         world.clearWorld();
     }
+
     @Override
     public void gameStatusChanged(final Game game) {
 
@@ -308,9 +328,13 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
+            boolean player_find = false;
+
             for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
 
                 if (playerObject.getName().equals(player.getUid())) {
+
+                    player_find = true;
 
                     world.remove(playerObject);
 
@@ -327,6 +351,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                     break;
                 }
             }
+
+            if (!player_find) initializePlayer(player);
         }
     }
 
@@ -348,6 +374,18 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
     @Override
+    public void updateVisiblePlayers(List<Player> players) {
+
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
+                world.remove(playerObject);
+            }
+
+            initializePlayers(players);
+        }
+    }
+
+    @Override
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
@@ -357,28 +395,25 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
             initializeGhosts(ghosts);
         }
-
-
     }
 
     @Override
     public void updateTreasures(List<Treasure> treasures) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
-            for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.TREASURE)) {
-                world.remove(ghostObject);
+            for (BeyondarObject treasureObject : world.getBeyondarObjectList(WorldObjectType.TREASURE)) {
+                world.remove(treasureObject);
             }
 
             initializeTreasures(treasures);
         }
-
     }
 
     @Override
     public void addTrap(Trap trap) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
-            initializeTrap(trap, TrapStatus.UNACTIVE);
+            initializeTrap(trap);
             currentGame.getTraps().add(trap);
         }
 
@@ -392,13 +427,13 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
                 if (trapObject.getName().equals(trap.getUid())) {
                     world.remove(trapObject);
-                    initializeTrap(trap, TrapStatus.ACTIVE);
+                    initializeTrap(trap);
 
                     for (Trap current_trap : currentGame.getTraps()) {
 
                         if (current_trap.getUid().equals(trap.getUid()))
                         {
-                            current_trap.setStatus(TrapStatus.ACTIVE);
+                            current_trap.setStatus(trap.getStatus());
                             break;
                         }
                     }
@@ -433,6 +468,18 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             }
         }
 
+    }
+
+    @Override
+    public void updateVisibleTraps(List<Trap> traps) {
+
+        if (currentGame.getStatus() == GameStatus.STARTED) {
+            for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
+                world.remove(trapObject);
+            }
+        }
+
+        initializeTraps(traps);
     }
 
     @Override
@@ -544,15 +591,25 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             treasure.setGeoPosition(treasures.get(i).getPos().getLatitude(),treasures.get(i).getPos().getLongitude());
             treasure.setImageResource(treasures.get(i).getStatus() == 0 ? R.drawable.treasure_close : R.drawable.treasure_open);
             treasure.setName(treasures.get(i).getUid());
-            world.addBeyondarObject(treasure,WorldObjectType.TREASURE);
+            world.addBeyondarObject(treasure, WorldObjectType.TREASURE);
         }
     }
 
-    public void initializeTrap(Trap trap, int status) {
+    public void initializeTraps(List<Trap> traps) {
+
+        currentGame.setTraps(traps);
+
+        for (int i = 0; i < currentGame.getTraps().size(); i++) {
+
+            initializeTrap(currentGame.getTraps().get(i));
+        }
+    }
+
+    public void initializeTrap(Trap trap) {
 
         GeoObject trap_obj = new GeoObject(1l);
         trap_obj.setGeoPosition(trap.getPos().getLatitude(), trap.getPos().getLongitude());
-        trap_obj.setImageResource(status == TrapStatus.UNACTIVE ? R.drawable.trap_disabled : R.drawable.trap_enabled);
+        trap_obj.setImageResource(trap.getStatus() == TrapStatus.UNACTIVE ? R.drawable.trap_disabled : R.drawable.trap_enabled);
         trap_obj.setName(trap.getUid());
         world.addBeyondarObject(trap_obj, WorldObjectType.TRAP);
     }
@@ -563,29 +620,21 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         player_obj.setGeoPosition(player.getPos().getLatitude(),player.getPos().getLongitude());
         player_obj.setImageResource(player.getTeam() == Team.RED ? R.drawable.team_red : R.drawable.team_blue);
         player_obj.setName(player.getUid());
-        world.addBeyondarObject(player_obj,WorldObjectType.PLAYER);
+        world.addBeyondarObject(player_obj, WorldObjectType.PLAYER);
     }
 
-    public void initializeWorld() {
+    public void initializePlayers(List<Player> players) {
 
-        world.clearWorld();
-
-        initializeGhosts(currentGame.getGhosts());
-
-        initializeTreasures(currentGame.getTreasures());
-
-        for (int i = 0; i < currentGame.getTraps().size(); i++) {
-
-            initializeTrap(currentGame.getTraps().get(i), TrapStatus.UNACTIVE);
-        }
+        currentGame.setPlayers(players);
 
         for (int i = 0; i < currentGame.getPlayers().size(); i++) {
 
             if (!currentGame.getPlayers().get(i).getUid().equals(my_uid)) {
-               initializePlayer(currentGame.getPlayers().get(i));
+                initializePlayer(currentGame.getPlayers().get(i));
             }
         }
     }
+
 
 
 
