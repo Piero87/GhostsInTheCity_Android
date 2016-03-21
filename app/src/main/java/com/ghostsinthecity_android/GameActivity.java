@@ -5,6 +5,7 @@ import android.hardware.SensorManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -252,6 +253,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     public void startGame() {
 
+        System.out.println("GAME STARTED");
+
         game_status_label.setVisibility(View.GONE);
         coin_icon.setVisibility(View.VISIBLE);
         key_icon.setVisibility(View.VISIBLE);
@@ -286,6 +289,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     public void pauseGame() {
 
+        System.out.println("GAME PAUSED");
+
         game_status_label.setText("Game Paused");
         game_status_label.setVisibility(View.VISIBLE);
 
@@ -293,6 +298,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
     public void gameFinished() {
+
+        System.out.println("GAME FINISHED");
+
         results_btn.setVisibility(View.VISIBLE);
         game_status_label.setVisibility(View.VISIBLE);
         game_status_label.setText("Game Finished");
