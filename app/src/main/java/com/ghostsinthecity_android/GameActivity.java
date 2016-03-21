@@ -668,7 +668,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
             GeoObject treasure = new GeoObject(1l);
             treasure.setGeoPosition(treasures.get(i).getPos().getLatitude(),treasures.get(i).getPos().getLongitude());
-            treasure.setImageResource(treasures.get(i).getStatus() == 0 ? R.drawable.treasure_close : R.drawable.treasure_open);
+            treasure.setImageResource(treasures.get(i).getStatus() == 0 ? R.drawable.trap_disabled : R.drawable.treasure_open);
             treasure.setName(treasures.get(i).getUid());
             world.addBeyondarObject(treasure, WorldObjectType.TREASURE);
         }
