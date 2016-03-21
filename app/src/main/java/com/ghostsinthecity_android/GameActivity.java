@@ -261,11 +261,17 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
 
-    public void updateHUD(Player player) {
+    public void updateHUD(final Player player) {
 
-        coin_label.setText(Integer.toString(player.getGold()));
-        key_label.setText(Integer.toString(player.getKeys().size()));
-        team_img.setBackgroundResource(player.getTeam() == Team.RED ? R.drawable.team_red : R.drawable.team_blue);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // UI code goes here
+                coin_label.setText(Integer.toString(player.getGold()));
+                key_label.setText(Integer.toString(player.getKeys().size()));
+                team_img.setBackgroundResource(player.getTeam() == Team.RED ? R.drawable.team_red : R.drawable.team_blue);
+            }
+        });
+
     }
 
     public void startGame() {
