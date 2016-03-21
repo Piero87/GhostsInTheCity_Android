@@ -164,7 +164,7 @@ public class ConnectionManager {
 
                     } else if (obj.getString("event").equals("visible_players")) {
 
-                        Player[] players = new Gson().fromJson(obj.getJSONObject("players").toString(), Player[].class);
+                        Player[] players = new Gson().fromJson(obj.getJSONArray("players").toString(), Player[].class);
 
                         if (ge != null) ge.updateVisiblePlayers(Arrays.asList(players));
 
