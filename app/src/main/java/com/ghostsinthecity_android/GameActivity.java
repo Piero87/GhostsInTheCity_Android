@@ -190,7 +190,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             //mBeyondarFragment.setWorld(world); //sembra non serva
 
             PositionUpdate pos_update = new PositionUpdate();
-            pos_update.setEvent("");
+            pos_update.setEvent("update_player_position");
             Point p = new Point();
             p.setLatitude(location.getLatitude());
             p.setLongitude(location.getLongitude());
@@ -275,7 +275,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.clearWorld();
 
         PositionUpdate pos_update = new PositionUpdate();
-        pos_update.setEvent("");
+        pos_update.setEvent("update_player_position");
         Point p = new Point();
 
         Location l = SocketLocation.getInstance().getLastLocation();
@@ -336,6 +336,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
+            System.out.println("UPDATE PLAYER POSITION");
+
             boolean player_find = false;
 
             for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
@@ -368,6 +370,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void updatePlayerInfo(Player player) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("UPDATE PLAYER INFO");
+
             for (Player current_player : currentGame.getPlayers()) {
 
                 if (current_player.getUid().equals(player.getUid()))
@@ -385,6 +390,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void updateVisiblePlayers(List<Player> players) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("UPDATE VISIBLE PLAYERS");
+
             for (BeyondarObject playerObject : world.getBeyondarObjectList(WorldObjectType.PLAYER)) {
                 world.remove(playerObject);
             }
@@ -397,6 +405,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("UPDATE GHOSTS POSITIONS");
+
             for (BeyondarObject ghostObject : world.getBeyondarObjectList(WorldObjectType.GHOST)) {
                 world.remove(ghostObject);
             }
@@ -409,6 +420,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void updateTreasures(List<Treasure> treasures) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("UPDATE TREASURES");
             for (BeyondarObject treasureObject : world.getBeyondarObjectList(WorldObjectType.TREASURE)) {
                 world.remove(treasureObject);
             }
@@ -421,6 +434,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void addTrap(Trap trap) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("ADD TRAP");
+
             initializeTrap(trap);
             currentGame.getTraps().add(trap);
         }
@@ -431,6 +447,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void activateTrap(Trap trap) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("ACTIVATE TRAP");
+
             for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
 
                 if (trapObject.getName().equals(trap.getUid())) {
@@ -457,6 +476,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void removeTrap(Trap trap) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("REMOVE TRAP");
+
             for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
 
                 if (trapObject.getName().equals(trap.getUid())) {
@@ -482,6 +504,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void updateVisibleTraps(List<Trap> traps) {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
+
+            System.out.println("UPDATE VISIBLE TRAP");
+
             for (BeyondarObject trapObject : world.getBeyondarObjectList(WorldObjectType.TRAP)) {
                 world.remove(trapObject);
             }
