@@ -98,6 +98,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     private SimpleGestureFilter detector;
 
+    private static final String TAG = "Ghost_GameActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -237,6 +239,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             //EventString hit_player = new EventString();
             //hit_player.setEvent("hit_player");
             //ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
+            Log.d(TAG,"DOUBLE TAP SET TRAP");
             EventString set_trap = new EventString();
             set_trap.setEvent("set_trap");
             ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
@@ -267,7 +270,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     public void startGame() {
 
-        System.out.println("GAME STARTED");
+        Log.d(TAG,"GAME STARTED");
 
         game_status_label.setVisibility(View.GONE);
         coin_icon.setVisibility(View.VISIBLE);
@@ -303,7 +306,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     public void waitingGame() {
 
-        System.out.println("GAME WAITING");
+        Log.d(TAG, "GAME WAITING");
 
         game_status_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size()) + " more players...");
         game_status_label.setVisibility(View.VISIBLE);
@@ -313,7 +316,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     public void pausedGame() {
 
-        System.out.println("GAME PAUSED");
+        Log.d(TAG, "GAME PAUSED");
 
         game_status_label.setText("Game Paused");
         game_status_label.setVisibility(View.VISIBLE);
@@ -323,7 +326,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
     public void gameFinished() {
 
-        System.out.println("GAME FINISHED");
+        Log.d(TAG, "GAME FINISHED");
 
         results_btn.setVisibility(View.VISIBLE);
         game_status_label.setVisibility(View.VISIBLE);
@@ -362,7 +365,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE PLAYER POSITION");
+            Log.d(TAG,"UPDATE PLAYER POSITION");
 
             boolean player_find = false;
 
@@ -401,7 +404,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE PLAYER INFO");
+            Log.d(TAG, "UPDATE PLAYER INFO");
 
             for (Player current_player : currentGame.getPlayers()) {
 
@@ -420,7 +423,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE VISIBLE PLAYERS");
+            Log.d(TAG, "UPDATE VISIBLE PLAYERS");
 
             if (world.getBeyondarObjectList(WorldObjectType.PLAYER) != null)
             {
@@ -439,7 +442,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE GHOSTS POSITIONS");
+            Log.d(TAG, "UPDATE GHOSTS POSITIONS");
 
             if (world.getBeyondarObjectList(WorldObjectType.GHOST) != null)
             {
@@ -458,7 +461,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE TREASURES");
+            Log.d(TAG, "UPDATE TREASURES");
 
             if (world.getBeyondarObjectList(WorldObjectType.TREASURE) != null)
             {
@@ -476,7 +479,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("ADD TRAP");
+            Log.d(TAG, "ADD TRAP");
 
             initializeTrap(trap);
             currentGame.getTraps().add(trap);
@@ -488,7 +491,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("ACTIVATE TRAP");
+            Log.d(TAG, "ACTIVATE TRAP");
 
             if (world.getBeyondarObjectList(WorldObjectType.TRAP) != null)
             {
@@ -518,7 +521,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("REMOVE TRAP");
+            Log.d(TAG, "REMOVE TRAP");
 
             if (world.getBeyondarObjectList(WorldObjectType.TRAP) != null)
             {
@@ -548,7 +551,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
 
-            System.out.println("UPDATE VISIBLE TRAP");
+            Log.d(TAG, "UPDATE VISIBLE TRAP");
 
             if (world.getBeyondarObjectList(WorldObjectType.TRAP) != null)
             {
