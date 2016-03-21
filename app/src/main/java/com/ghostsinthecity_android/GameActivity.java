@@ -234,9 +234,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void onDoubleTap() {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
-            EventString hit_player = new EventString();
-            hit_player.setEvent("hit_player");
-            ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
+            //EventString hit_player = new EventString();
+            //hit_player.setEvent("hit_player");
+            //ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
+            EventString set_trap = new EventString();
+            set_trap.setEvent("set_trap");
+            ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
         }
     }
 
