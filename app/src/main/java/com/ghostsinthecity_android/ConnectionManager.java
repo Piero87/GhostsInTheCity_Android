@@ -35,8 +35,8 @@ public class ConnectionManager {
     private WebSocketClient webSocket = null;
     public String username;
     public String uid;
-    public String game_uid;
     public GameResults game_result = null;
+    public Game current_game = null;
 
     private Handler handler;
 
@@ -62,7 +62,7 @@ public class ConnectionManager {
         uuid = uuid.substring(0, 8);
         this.username = username;
         this.uid = uuid;
-        this.game_uid = "";
+        this.current_game = null;
         handler = new Handler();
     }
     public void setChangeListener(GameEvent listener) {
@@ -86,9 +86,9 @@ public class ConnectionManager {
             public void onOpen(ServerHandshake serverHandshake) {
                 System.out.println("Websocket opened");
                 handler.postDelayed(pingRunnable, 20000);
-                if (ge != null && game_uid.equals("")) {
+                if (ge != null && current_game == null) {
                     ge.connected();
-                } else if (ge != null && !game_uid.equals("")) {
+                } else if (ge != null && current_game != null) {
 
                     //C'era una partita in corso spedisco un resume
                     ResumeGame resume = new ResumeGame();
@@ -103,7 +103,7 @@ public class ConnectionManager {
                     p.setLongitude(l.getLongitude());
 
                     resume.setPos(p);
-                    resume.setGame_id(game_uid);
+                    resume.setGame_id(current_game.getId());
 
                     sendMessage(new Gson().toJson(resume));
                 }
@@ -138,13 +138,15 @@ public class ConnectionManager {
                         System.out.println("Ricevuto messaggio Game Ready");
 
                         Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
-                        game_uid = game.getId();
+                        current_game = game;
                         game_result = null;
 
                         if (ge != null) ge.openGame(game);
+
                     } else if (obj.getString("event").equals("game_status")) {
 
                         Game game = new Gson().fromJson(obj.getJSONObject("game").toString(), Game.class);
+                        current_game = game;
 
                         if (ge != null) ge.gameStatusChanged(game);
 
@@ -221,9 +223,10 @@ public class ConnectionManager {
                         message.setOption(obj.getString("options"));
 
                         if (ge != null) ge.showMessage(message);
+
                     } else if (obj.getString("event").equals("game_results")) {
 
-                        game_uid = "";
+                        current_game = null;
                         GameResults game_results_tmp = new GameResults();
                         game_results_tmp.setTeam(obj.getInt("team"));
                         Player[] players = new Gson().fromJson(obj.getJSONArray("players").toString(), Player[].class);

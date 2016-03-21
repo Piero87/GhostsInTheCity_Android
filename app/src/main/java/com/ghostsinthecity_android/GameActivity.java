@@ -100,6 +100,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,6 +112,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         ConnectionManager.getInstance().setChangeListener(GameActivity.this);
         SocketLocation.getInstance().setChangeListener(GameActivity.this);
+
         my_uid = ConnectionManager.getInstance().uid;
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(R.id.beyondarFragment);
@@ -180,6 +182,15 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         detector = new SimpleGestureFilter(this,this);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (ConnectionManager.getInstance().current_game != null) {
+            gameStatusChanged(ConnectionManager.getInstance().current_game);
+        }
+    }
 
     @Override
     public void updateLocation(Location location) {
@@ -328,7 +339,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                 }
             }
         });
-
     }
 
     @Override
@@ -387,7 +397,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                 }
             }
         }
-
     }
 
     @Override
@@ -456,7 +465,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             initializeTrap(trap);
             currentGame.getTraps().add(trap);
         }
-
     }
 
     @Override
@@ -486,9 +494,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                     }
                 }
             }
-
         }
-
     }
 
     @Override
@@ -518,9 +524,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                     }
                 }
             }
-
         }
-
     }
 
     @Override
@@ -536,7 +540,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                     world.remove(trapObject);
                 }
             }
-
         }
 
         initializeTraps(traps);
