@@ -412,15 +412,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
             Log.d(TAG, "UPDATE PLAYER INFO");
 
-            for (Player current_player : currentGame.getPlayers()) {
-
-                if (current_player.getUid().equals(player.getUid()))
-                {
-                    current_player = player;
-                    updateHUD(current_player);
-                    break;
-                }
-            }
+            updateHUD(player);
         }
     }
 
