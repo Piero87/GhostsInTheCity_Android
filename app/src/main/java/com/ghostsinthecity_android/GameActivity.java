@@ -166,7 +166,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         team_img.setVisibility(View.GONE);
         results_btn.setVisibility(View.GONE);
 
-        game_status_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size()) + " more players...");
+
 
         Location l = SocketLocation.getInstance().getLastLocation();
 
@@ -298,7 +298,17 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         ConnectionManager.getInstance().sendMessage(new Gson().toJson(pos_update));
     }
 
-    public void pauseGame() {
+    public void waitingGame() {
+
+        System.out.println("GAME WAITING");
+
+        game_status_label.setText("Waiting " + (currentGame.getN_players() - currentGame.getPlayers().size()) + " more players...");
+        game_status_label.setVisibility(View.VISIBLE);
+
+        world.clearWorld();
+    }
+
+    public void pausedGame() {
 
         System.out.println("GAME PAUSED");
 
@@ -306,8 +316,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         game_status_label.setVisibility(View.VISIBLE);
 
         world.clearWorld();
-    }
 
+    }
     public void gameFinished() {
 
         System.out.println("GAME FINISHED");
@@ -331,10 +341,13 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                         startGame();
                         break;
                     case GameStatus.WAITING:
-                        pauseGame();
+                        waitingGame();
                         break;
                     case GameStatus.FINISHED:
                         gameFinished();
+                        break;
+                    case GameStatus.PAUSED:
+                        pausedGame();
                         break;
                 }
             }
