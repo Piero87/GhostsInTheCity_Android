@@ -36,6 +36,7 @@ import com.ghostsinthecity_android.models.Trap;
 import com.ghostsinthecity_android.models.Treasure;
 import com.google.gson.Gson;
 import android.location.Location;
+import android.widget.TextView;
 
 public class GameLobby extends FragmentActivity implements GameEvent {
 
@@ -61,7 +62,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
 
         final Button create_game = (Button) findViewById(R.id.create_btn);
 
-        final EditText n_player_txt = (EditText) findViewById(R.id.n_player_text);
+        final TextView n_player_txt = (EditText) findViewById(R.id.n_player_text);
         n_player_txt.setText(Integer.toString(n_players));
         final Button sub_player_btn = (Button) findViewById(R.id.sub_players);
         sub_player_btn.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +82,7 @@ public class GameLobby extends FragmentActivity implements GameEvent {
             }
         });
 
-        final EditText arena_meters_txt = (EditText) findViewById(R.id.arena_meters);
+        final TextView arena_meters_txt = (EditText) findViewById(R.id.arena_meters);
         arena_meters_txt.setText(Integer.toString(arena_meters));
         final Button sub_meters_btn = (Button) findViewById(R.id.sub_meters);
         sub_meters_btn.setOnClickListener(new View.OnClickListener() {
