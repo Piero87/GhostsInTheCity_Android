@@ -219,11 +219,13 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         if (currentGame.getStatus() == GameStatus.STARTED) {
             switch (direction) {
                 case SimpleGestureFilter.SWIPE_DOWN:
+                    Log.d(TAG,"SWIPE DOWN");
                     EventString set_trap = new EventString();
                     set_trap.setEvent("set_trap");
                     ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
                     break;
                 case SimpleGestureFilter.SWIPE_UP:
+                    Log.d(TAG,"SWIPE UP");
                     EventString open_treasure = new EventString();
                     open_treasure.setEvent("open_treasure");
                     ConnectionManager.getInstance().sendMessage(new Gson().toJson(open_treasure));
@@ -236,13 +238,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void onDoubleTap() {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
-            //EventString hit_player = new EventString();
-            //hit_player.setEvent("hit_player");
-            //ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
-            Log.d(TAG,"DOUBLE TAP SET TRAP");
-            EventString set_trap = new EventString();
-            set_trap.setEvent("set_trap");
-            ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
+            Log.d(TAG,"DOUBLE TAP");
+            EventString hit_player = new EventString();
+            hit_player.setEvent("hit_player");
+            ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
         }
     }
 
