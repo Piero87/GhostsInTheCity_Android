@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import android.location.Location;
 import java.util.List;
+import android.os.Handler;
 
 import com.ghostsinthecity_android.SimpleGestureFilter.SimpleGestureListener;
 
@@ -91,8 +92,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     private ImageView bam_img;
     private ImageView pow_img;
     private TextView team_img;
+    private TextView action_label;
     private Button results_btn;
     private Button leave_btn;
+
+    private Handler handler;
 
     private String my_uid;
 
@@ -103,6 +107,8 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        handler = new Handler();
+
         super.onCreate(savedInstanceState);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -110,7 +116,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         setContentView(R.layout.activity_game);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-
 
         ConnectionManager.getInstance().setChangeListener(GameActivity.this);
         SocketLocation.getInstance().setChangeListener(GameActivity.this);
@@ -128,11 +133,14 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         key_icon = (ImageView) findViewById(R.id.key_icon);
         coin_label = (TextView) findViewById(R.id.coin_label);
         key_label = (TextView) findViewById(R.id.key_label);
+        action_label = (TextView) findViewById(R.id.action_label);
         bam_img = (ImageView) findViewById(R.id.hit2);
         pow_img = (ImageView) findViewById(R.id.hit1);
         team_img = (TextView) findViewById(R.id.player_team);
         results_btn = (Button) findViewById(R.id.results_btn);
         leave_btn = (Button) findViewById(R.id.leave_btn);
+
+        action_label.setText("");
 
         results_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -159,6 +167,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             }
         });
 
+        action_label.setVisibility(View.GONE);
         coin_icon.setVisibility(View.GONE);
         key_icon.setVisibility(View.GONE);
         coin_label.setVisibility(View.GONE);
@@ -220,12 +229,16 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             switch (direction) {
                 case SimpleGestureFilter.SWIPE_DOWN:
                     Log.d(TAG,"SWIPE DOWN");
+                    action_label.setText("SET TRAP!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     EventString set_trap = new EventString();
                     set_trap.setEvent("set_trap");
                     ConnectionManager.getInstance().sendMessage(new Gson().toJson(set_trap));
                     break;
                 case SimpleGestureFilter.SWIPE_UP:
                     Log.d(TAG,"SWIPE UP");
+                    action_label.setText("OPEN TREASURE!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     EventString open_treasure = new EventString();
                     open_treasure.setEvent("open_treasure");
                     ConnectionManager.getInstance().sendMessage(new Gson().toJson(open_treasure));
@@ -238,7 +251,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     public void onDoubleTap() {
 
         if (currentGame.getStatus() == GameStatus.STARTED) {
-            Log.d(TAG,"DOUBLE TAP");
+            Log.d(TAG, "DOUBLE TAP");
+            action_label.setText("HIT PLAYER!");
+            handler.postDelayed(emptyActionLabel, 1000);
             EventString hit_player = new EventString();
             hit_player.setEvent("hit_player");
             ConnectionManager.getInstance().sendMessage(new Gson().toJson(hit_player));
@@ -290,6 +305,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
             }
         }
 
+        action_label.setVisibility(View.VISIBLE);
         coin_label.setVisibility(View.VISIBLE);
         key_label.setVisibility(View.VISIBLE);
         team_img.setVisibility(View.VISIBLE);
@@ -714,8 +730,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
-
-
+    private Runnable emptyActionLabel = new Runnable() {
+        @Override
+        public void run() {
+            action_label.setText("");
+        }
+    };
 
 
 
