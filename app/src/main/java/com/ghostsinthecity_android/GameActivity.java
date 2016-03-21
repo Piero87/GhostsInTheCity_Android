@@ -76,7 +76,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         public static final int PLAYER = 0;
         public static final int GHOST = 1;
         public static final int TREASURE = 2;
-        public static final int TRAP = 2;
+        public static final int TRAP = 3;
     }
 
     private Game currentGame;
@@ -664,11 +664,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
         currentGame.setTreasures(treasures);
 
-        Log.d(TAG, "Inizializzo tesori con quantità: " + treasures.size());
-
         for (int i = 0; i < treasures.size(); i++) {
 
-            GeoObject treasure = new GeoObject(1l+i);
+            GeoObject treasure = new GeoObject(1l);
             treasure.setGeoPosition(treasures.get(i).getPos().getLatitude(),treasures.get(i).getPos().getLongitude());
             treasure.setImageResource(treasures.get(i).getStatus() == 0 ? R.drawable.treasure_close : R.drawable.treasure_open);
             treasure.setName(treasures.get(i).getUid());
