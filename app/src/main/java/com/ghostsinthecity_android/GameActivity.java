@@ -410,7 +410,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
                 if (current_player.getUid().equals(player.getUid()))
                 {
-                    current_player.setPos(player.getPos());
+                    current_player = player;
                     updateHUD(current_player);
                     break;
                 }
