@@ -50,14 +50,25 @@ public class GameResultsActivity extends Activity {
 
         List<Player> players = game_result.getPlayers();
         int winner_team = game_result.getTeam();
-        boolean win = false;
+
+        lbl_result.setText("YOUR TEAM LOST");
+        lbl_comment.setText("try again next time");
+        img_victory.setVisibility(View.INVISIBLE);
+        img_defeat.setVisibility(View.VISIBLE);
+
+        if (winner_team == -1 ) {
+            // La missione è finita prima del tempo, qualcuno se n'è andato
+
+            lbl_result.setText("MISSION ABORTED");
+            lbl_comment.setText("some coward left the game");
+
+        }
 
         for (Player p : players) {
             if (p.getUid().equals(my_uid)) {
+                lbl_coin.setText(p.getGold());
+                lbl_key.setText(p.getKeys().size());
                 if (p.getTeam() == winner_team) {
-                    win = true;
-                    lbl_coin.setText(p.getGold());
-                    lbl_key.setText(p.getKeys().size());
                     lbl_result.setText("YOUR TEAM WON");
                     lbl_comment.setText("now nothing is strange in the neighborhood");
                     img_victory.setVisibility(View.VISIBLE);
@@ -65,13 +76,6 @@ public class GameResultsActivity extends Activity {
                     break;
                 }
             }
-        }
-
-        if (!win) {
-            lbl_result.setText("YOUR TEAM LOST");
-            lbl_comment.setText("try again next time");
-            img_victory.setVisibility(View.INVISIBLE);
-            img_defeat.setVisibility(View.VISIBLE);
         }
 
         btn_play_again.setOnClickListener(new View.OnClickListener() {
