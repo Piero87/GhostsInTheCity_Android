@@ -5,4 +5,90 @@
     android:layout_height="match_parent"
     tools:context="com.ghostsinthecity_android.GameResultsActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="YOUR TEAM WON!"
+        android:id="@+id/lbl_result"
+        android:textSize="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="now nothing is strange in the neighborhood"
+        android:id="@+id/lbl_comment"
+        android:layout_below="@+id/lbl_result"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/img_coin"
+        android:src="@drawable/coin"
+        android:layout_alignTop="@+id/lbl_key"
+        android:layout_toLeftOf="@+id/img_victory" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="100"
+        android:id="@+id/lbl_coin"
+        android:gravity="center_vertical|left"
+        android:textSize="50dp"
+        android:textColor="#ffd836"
+        android:layout_alignBottom="@+id/img_coin"
+        android:layout_toRightOf="@+id/img_coin" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/img_key"
+        android:src="@drawable/key"
+        android:layout_alignTop="@+id/lbl_key"
+        android:layout_alignRight="@+id/img_victory" />
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/lbl_key"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="50dp"
+        android:textColor="#353535"
+        android:layout_below="@+id/img_victory"
+        android:layout_toRightOf="@+id/img_key" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/img_defeat"
+        android:src="@drawable/background_defeat"
+        android:layout_alignTop="@+id/img_victory"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/img_victory"
+        android:src="@drawable/background_victory"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/img_defeat" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PLAY AGAIN"
+        android:id="@+id/btn_play_again"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp" />
+
 </RelativeLayout>

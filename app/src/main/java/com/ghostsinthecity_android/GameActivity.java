@@ -1,8 +1,6 @@
 package com.ghostsinthecity_android;
 
-import android.app.AlertDialog;
 import android.hardware.SensorManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -129,10 +127,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         currentGame  = (Game)mIntent.getParcelableExtra("game");
 
         game_status_label = (TextView) findViewById(R.id.game_status_label);
-        coin_icon = (ImageView) findViewById(R.id.coin_icon);
-        key_icon = (ImageView) findViewById(R.id.key_icon);
-        coin_label = (TextView) findViewById(R.id.coin_label);
-        key_label = (TextView) findViewById(R.id.key_label);
+        coin_icon = (ImageView) findViewById(R.id.img_coin);
+        key_icon = (ImageView) findViewById(R.id.img_key);
+        coin_label = (TextView) findViewById(R.id.lbl_coin);
+        key_label = (TextView) findViewById(R.id.lbl_key);
         action_label = (TextView) findViewById(R.id.action_label);
         bam_img = (ImageView) findViewById(R.id.hit2);
         pow_img = (ImageView) findViewById(R.id.hit1);
@@ -176,8 +174,6 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         pow_img.setVisibility(View.GONE);
         team_img.setVisibility(View.GONE);
         results_btn.setVisibility(View.GONE);
-
-
 
         Location l = SocketLocation.getInstance().getLastLocation();
 
