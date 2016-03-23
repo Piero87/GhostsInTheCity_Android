@@ -20,6 +20,7 @@ public class Game implements Parcelable {
     List<Ghost> ghosts;
     List<Treasure> treasures;
     List<Trap> traps;
+    List<Point> area;
 
     public String getId() {
         return id;
@@ -93,6 +94,13 @@ public class Game implements Parcelable {
         this.traps = traps;
     }
 
+    public List<Point> getArea() {
+        return area;
+    }
+
+    public void setArea(List<Point> area) {
+        this.area = area;
+    }
 
     public static Creator<Game> getCREATOR() {
         return CREATOR;
@@ -127,6 +135,12 @@ public class Game implements Parcelable {
             in.readList(traps, Trap.class.getClassLoader());
         } else {
             traps = null;
+        }
+        if (in.readByte() == 0x01) {
+            area = new ArrayList<Point>();
+            in.readList(area, Point.class.getClassLoader());
+        } else {
+            area = null;
         }
     }
 
@@ -165,6 +179,12 @@ public class Game implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(traps);
+        }
+        if (area == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(area);
         }
     }
 
