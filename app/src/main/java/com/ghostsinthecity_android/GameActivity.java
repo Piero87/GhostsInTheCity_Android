@@ -595,12 +595,24 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
                     break;
                 case 1:
                     Toast.makeText(this, "Ghost Attack! You lost " + msg_code.getOption() + "$!", Toast.LENGTH_LONG).show();
-                    bam_img.setVisibility(View.VISIBLE);
-                    handler.postDelayed(hideBAM, 1000);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            // UI code goes here
+                            bam_img.setVisibility(View.VISIBLE);
+                            handler.postDelayed(hideBAM, 1000);
+                        }
+                    });
+
                     break;
                 case 2:
-                    pow_img.setVisibility(View.VISIBLE);
-                    handler.postDelayed(hidePOW, 1000);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            // UI code goes here
+                            pow_img.setVisibility(View.VISIBLE);
+                            handler.postDelayed(hidePOW, 1000);
+                        }
+                    });
+
                     Toast.makeText(this, "Ouch!", Toast.LENGTH_LONG).show();
                     break;
                 case 3:
