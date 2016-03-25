@@ -184,7 +184,7 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         mBeyondarFragment.setWorld(world);
         mBeyondarFragment.setMaxDistanceToRender(50);
         mBeyondarFragment.setSensorDelay(SensorManager.SENSOR_DELAY_GAME);
-        mBeyondarFragment.showFPS(true);
+        mBeyondarFragment.showFPS(false);
 
         detector = new SimpleGestureFilter(this,this);
     }
