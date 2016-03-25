@@ -29,6 +29,12 @@ public class MainActivity extends FragmentActivity implements GameEvent {
     private Button button;
     private EditText text_field;
 
+    /**
+     *
+     * Default OnCreate method of Android, initialize main component
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +69,21 @@ public class MainActivity extends FragmentActivity implements GameEvent {
         });
     }
 
+    /**
+     *
+     * This method inizialitze the ConnectionManager Singleton, and the this class with the GameEvent Listener
+     *
+     * @param username name of the user account
+     */
     public void requestConnectingWithName(String username) {
         ConnectionManager.getInstance().setChangeListener(MainActivity.this);
         ConnectionManager.getInstance().initializeAccount(username);
         ConnectionManager.getInstance().openWebSocket();
     }
 
+    /**
+     * Default onResume method of Android, that will be called when the view appear
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -95,6 +110,10 @@ public class MainActivity extends FragmentActivity implements GameEvent {
         }
     }
 
+    /**
+     * GameEvent listener method that it's called when the websocket connect to the server.
+     * Then open the WaitingGPSActivity.
+     */
     @Override
     public void connected() {
         Log.d(TAG, "Connected");
@@ -108,73 +127,151 @@ public class MainActivity extends FragmentActivity implements GameEvent {
         });
     }
 
+    /**
+     *
+     * GameEvent listener method to refresh games available list
+     *
+     * @param games_list list of games available
+     */
     @Override
     public void refreshGameList(Game[] games_list) {
         // TODO Auto-generated method stub
 
     }
 
+
+    /**
+     *
+     * GameEvent listener method to open GameActivity view
+     *
+     * @param game Game Entity
+     */
     @Override
     public void openGame(Game game) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when GameStatus change
+     *
+     * @param game Game Entity
+     */
     @Override
     public void gameStatusChanged(Game game) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player position change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerPosition(Player player) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player info change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerInfo(Player player) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when ghosts position change
+     * @param ghosts Ghost List Entity
+     */
     @Override
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when player position change and give the visible treasures around player
+     *
+     * @param treasures Treasures List Entity
+     */
     @Override
     public void updateTreasures(List<Treasure> treasures) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a new trap is added
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void addTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a trap is activated
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void activateTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a trap removed
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void removeTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when show a info message
+     *
+     * @param msg_code MessageCode Entity
+     */
     @Override
     public void showMessage(MessageCode msg_code) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible traps around player
+     *
+     * @param traps Trap Entity
+     */
     @Override
     public void updateVisibleTraps(List<Trap> traps) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible players around player
+     *
+     * @param players Player list Entity
+     */
     @Override
     public void updateVisiblePlayers(List<Player> players) {
 
     }
 
+    /**
+     *
+     * Give the name of the device
+     *
+     * @return string Device name
+     */
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -186,6 +283,11 @@ public class MainActivity extends FragmentActivity implements GameEvent {
     }
 
 
+    /**
+     * If the parameter is not null capitalize the first letter
+     * @param s string to capitize
+     * @return
+     */
     private String capitalize(String s) {
         if (s == null || s.length() == 0) {
             return "";

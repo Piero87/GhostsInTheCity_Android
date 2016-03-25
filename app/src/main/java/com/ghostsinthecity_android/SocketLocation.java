@@ -25,7 +25,12 @@ public class SocketLocation {
     private LocationEvent le;
     private Location lastLocation;
 
-    // Lazy Initialization (If required then only)
+    /**
+     *
+     * Initialize the Singleton SocketLocation instance if is not already initialized
+     *
+     * @return ConnectionManager instance
+     */
     public static SocketLocation getInstance() {
         if (instance == null) {
             // Thread Safe. Might be costly operation in some case
@@ -38,6 +43,10 @@ public class SocketLocation {
         return instance;
     }
 
+    /**
+     * Set last location in lastLocation variable
+     * @param location
+     */
     void setLastLocation (Location location) {
         this.lastLocation = location;
 
@@ -47,21 +56,36 @@ public class SocketLocation {
 
     }
 
+    /**
+     * Get last location retrived
+     * @return
+     */
     public Location getLastLocation () {
         return this.lastLocation;
     }
 
+    /**
+     *
+     * Set the listener of the GameEvent interface
+     *
+     * @param listener GameEvent listener
+     */
     public void setChangeListener(LocationEvent listener) {
         this.le = listener;
     }
 
+    /**
+     * Initialize the Thread that handle and start the socket server
+     */
     public void startSocketServer () {
 
         SocketServerThread socketServerThread = new SocketServerThread();
         socketServerThread.start();
-
     }
 
+    /**
+     * This class handle the Server Socket which expects a device available to send the GPS signal
+     */
     private class SocketServerThread extends Thread {
 
         static final int SocketServerPORT = 8080;
@@ -96,6 +120,9 @@ public class SocketLocation {
 
     }
 
+    /**
+     * This class handle the single socket connection
+     */
     public class SocketConnection extends Thread {
         Socket socket;
 
@@ -130,6 +157,10 @@ public class SocketLocation {
 
     }
 
+    /**
+     * Find IP Address
+     * @throws SocketException
+     */
     void enumrateIPAddress() throws SocketException {
         Enumeration e = NetworkInterface.getNetworkInterfaces();
         while(e.hasMoreElements())

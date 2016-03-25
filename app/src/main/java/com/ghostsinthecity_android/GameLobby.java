@@ -47,6 +47,13 @@ public class GameLobby extends FragmentActivity implements GameEvent {
     private int arena_meters = 20;
 
     private ScheduledExecutorService worker;
+
+    /**
+     *
+     * Default OnCreate method of Android, initialize main component
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,6 +180,12 @@ public class GameLobby extends FragmentActivity implements GameEvent {
 
     }
 
+    /**
+     *
+     * GameEvent listener method to open GameActivity view
+     *
+     * @param game Game Entity
+     */
     public void openGame(Game game) {
         //Per sicurezza quando entrerò nella partita chiudo il worker per
         //evitare che continui a mandare richieste di list game al server
@@ -183,67 +196,136 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         startActivity(i);
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when GameStatus change
+     *
+     * @param game Game Entity
+     */
     @Override
     public void gameStatusChanged(Game game) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player position change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerPosition(Player player) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player info change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerInfo(Player player) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when ghosts position change
+     * @param ghosts Ghost List Entity
+     */
     @Override
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when player position change and give the visible treasures around player
+     *
+     * @param treasures Treasures List Entity
+     */
     @Override
     public void updateTreasures(List<Treasure> treasures) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a new trap is added
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void addTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a trap is activated
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void activateTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when a trap removed
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void removeTrap(Trap trap) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when show a info message
+     *
+     * @param msg_code MessageCode Entity
+     */
     @Override
     public void showMessage(MessageCode msg_code) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible traps around player
+     *
+     * @param traps Trap Entity
+     */
     @Override
     public void updateVisibleTraps(List<Trap> traps) {
 
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible players around player
+     *
+     * @param players Trap Entity
+     */
     @Override
     public void updateVisiblePlayers(List<Player> players) {
 
     }
 
+    /**
+     *
+     * Send message to the server to request Games List available
+     *
+      */
     void requestGameList() {
         System.out.println("Richiedo Lista Partite...");
 
         ConnectionManager.getInstance().sendMessage(new Gson().toJson(games_list_request));
     }
 
+    /**
+     *
+     * Schedule timer to request Game List every second
+     *
+     */
     void timerRequestGamesList() {
         if(!worker.isShutdown()){
             Runnable task = new Runnable() {
@@ -255,6 +337,12 @@ public class GameLobby extends FragmentActivity implements GameEvent {
         }
     }
 
+    /**
+     *
+     * GameEvent listener method to open GameActivity view
+     *
+     * @param games_list Game List Entity
+     */
     @Override
     public void refreshGameList(final Game[] games_list) {
         System.out.println("Ricevuto Lista Partite...");
@@ -267,20 +355,25 @@ public class GameLobby extends FragmentActivity implements GameEvent {
                 adapter.notifyDataSetChanged();
 
                 timerRequestGamesList();
-
             }
         });
-
-
-
     }
 
+    /**
+     * GameEvent listener method that it's called when the websocket connect to the server.
+     * Then open the WaitingGPSActivity.
+     */
     @Override
     public void connected() {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Get the current date
+     * @param time current unix time
+     * @return
+     */
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ITALIAN);
         cal.setTimeInMillis(time);

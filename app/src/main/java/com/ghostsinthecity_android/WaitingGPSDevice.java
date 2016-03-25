@@ -35,6 +35,12 @@ public class WaitingGPSDevice extends Activity implements LocationEvent {
     ServiceInfo serviceInfo;
     private TextView code_gps;
 
+    /**
+     *
+     * Default OnCreate method of Android, initialize main component
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,11 @@ public class WaitingGPSDevice extends Activity implements LocationEvent {
         job.execute();
     }
 
+    /**
+     * LocationEvent listener method that notify when the gps position change
+     *
+     * @param location Location Entity
+     */
     @Override
     public void updateLocation(Location location) {
 
@@ -72,6 +83,9 @@ public class WaitingGPSDevice extends Activity implements LocationEvent {
 
     }
 
+    /**
+     * This AsyncTask register a Bonjour Service to request a GPS position
+     */
     class RegisterService extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {

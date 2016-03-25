@@ -27,6 +27,12 @@ public class GameResultsActivity extends Activity {
     private ImageView img_defeat;
     private Button btn_play_again;
 
+    /**
+     *
+     * Default OnCreate method of Android, initialize main component
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

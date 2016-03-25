@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+
 public class CustomAdapterService extends ArrayAdapter<Game>{
 
     public CustomAdapterService(Context context, int textViewResourceId,
@@ -36,7 +37,6 @@ public class CustomAdapterService extends ArrayAdapter<Game>{
 
         nome.setText(String.format("Mission created by %s at %s", part1, tmp_date));
         nome.setTextColor(Color.WHITE);
-        //c1.setTextSize(18);
 
         return convertView;
     }

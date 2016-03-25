@@ -43,7 +43,13 @@ public class ConnectionManager {
     protected ConnectionManager() {
     }
 
-    // Lazy Initialization (If required then only)
+
+    /**
+     *
+     * Initialize the Singleton ConnectionManager instance if is not already initialized
+     *
+     * @return ConnectionManager instance
+     */
     public static ConnectionManager getInstance() {
         if (instance == null) {
             // Thread Safe. Might be costly operation in some case
@@ -56,6 +62,12 @@ public class ConnectionManager {
         return instance;
     }
 
+    /**
+     *
+     * Set username and generate a random uid
+     *
+     * @param username username of the player account
+     */
     public void initializeAccount(String username) {
 
         String uuid = UUID.randomUUID().toString();
@@ -65,10 +77,20 @@ public class ConnectionManager {
         this.current_game = null;
         handler = new Handler();
     }
+
+    /**
+     *
+     * Set the listener of the GameEvent interface
+     *
+     * @param listener GameEvent listener
+     */
     public void setChangeListener(GameEvent listener) {
         this.ge = listener;
     }
 
+    /**
+     * Open the websocket
+     */
     public void openWebSocket() {
 
         URI uri;
@@ -83,6 +105,10 @@ public class ConnectionManager {
 
         webSocket = new WebSocketClient(uri) {
 
+            /**
+             * Called when the socket connection is openend
+             * @param serverHandshake
+             */
             public void onOpen(ServerHandshake serverHandshake) {
                 System.out.println("Websocket opened");
                 handler.postDelayed(pingRunnable, 20000);
@@ -109,6 +135,12 @@ public class ConnectionManager {
                 }
             }
 
+            /**
+             * Called when the socket connection close
+             * @param i
+             * @param s
+             * @param b
+             */
             @Override
             public void onClose(int i, String s, boolean b) {
                 System.out.println("Websocket closed: "+s);
@@ -116,11 +148,19 @@ public class ConnectionManager {
                 openWebSocket();
             }
 
+            /**
+             * Called when some error on the socket connection occurs
+             * @param e
+             */
             @Override
             public void onError(Exception e) {
                 System.out.println("Websocket error: "+e.getMessage());
             }
 
+            /**
+             * Called when the web socket receive a new message
+             * @param s
+             */
             @Override
             public void onMessage(String s) {
                 System.out.println("Messaggio arrivato: "+s);
@@ -245,11 +285,20 @@ public class ConnectionManager {
         webSocket.connect();
     }
 
+    /**
+     *
+     * This method is used to send message through the Websocket
+     *
+     * @param json JSON message to send via WebSocket
+     */
     public void sendMessage(String json) {
         System.out.println("Richiesta invio messaggio...");
         webSocket.send(json);
     }
 
+    /**
+     * This method is used to send a ping to the server to mantain the connection alive, and avoid idle
+     */
     private Runnable pingRunnable = new Runnable() {
         @Override
         public void run() {
