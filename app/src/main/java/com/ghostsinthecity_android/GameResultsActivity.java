@@ -57,23 +57,30 @@ public class GameResultsActivity extends Activity {
         List<Player> players = game_result.getPlayers();
         int winner_team = game_result.getTeam();
 
+        System.out.println("MIO UID: "+my_uid);
+        System.out.println("WINNER TEAM: " + winner_team);
+
         lbl_result.setText("YOUR TEAM LOST");
         lbl_comment.setText("try again next time");
         img_victory.setVisibility(View.INVISIBLE);
         img_defeat.setVisibility(View.VISIBLE);
 
-        if (winner_team == -1 ) {
+        if (winner_team == -2 ) {
             // La missione è finita prima del tempo, qualcuno se n'è andato
 
             lbl_result.setText("MISSION ABORTED");
             lbl_comment.setText("some coward left the game");
 
+        } else if (winner_team == -1) {
+            //La missione è finita in pari
+            lbl_result.setText("MISSION DRAW");
+            lbl_comment.setText("It ended in a draw");
         }
 
         for (Player p : players) {
             if (p.getUid().equals(my_uid)) {
-                lbl_coin.setText(Integer.toString(p.getGold()));
-                lbl_key.setText(Integer.toString(p.getKeys().size()));
+                lbl_coin.setText(String.valueOf(p.getGold()));
+                lbl_key.setText(String.valueOf(p.getKeys().size()));
                 if (p.getTeam() == winner_team) {
                     lbl_result.setText("YOUR TEAM WON");
                     lbl_comment.setText("now nothing is strange in the neighborhood");

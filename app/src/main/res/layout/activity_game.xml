@@ -117,5 +117,6 @@
         android:id="@+id/action_label"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#ffffff" />
 </RelativeLayout>

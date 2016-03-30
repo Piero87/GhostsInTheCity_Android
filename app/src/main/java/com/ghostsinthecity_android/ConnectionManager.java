@@ -260,7 +260,7 @@ public class ConnectionManager {
 
                         MessageCode message = new MessageCode();
                         message.setCode(obj.getInt("code"));
-                        message.setOption(obj.getString("options"));
+                        message.setOption(obj.getString("option"));
 
                         if (ge != null) ge.showMessage(message);
 

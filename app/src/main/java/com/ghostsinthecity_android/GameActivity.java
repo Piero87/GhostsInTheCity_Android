@@ -579,57 +579,55 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         if (currentGame.getStatus() == GameStatus.STARTED) {
             switch (msg_code.getCode()) {
                 case -1:
-                    Toast.makeText(this, "You cannot set a trap!", Toast.LENGTH_LONG).show();
+                    action_label.setText("You cannot set a trap!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case -2:
-                    Toast.makeText(this, "Come inside, quick, you'll catch a cold out there!", Toast.LENGTH_LONG).show();
+                    action_label.setText("Come inside, quick, you'll catch a cold out there!");
                     break;
                 case -3:
-                    Toast.makeText(this, "This treasure is locked and you don't have the right key.", Toast.LENGTH_LONG).show();
+                    action_label.setText("This treasure is locked and you don't have the right key.");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case -4:
-                    Toast.makeText(this, "Some moron leaved the mission and has not come back in time...", Toast.LENGTH_LONG).show();
+                    action_label.setText("Some moron leaved the mission and has not come back in time...");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case -5:
-                    Toast.makeText(this, "oh oh, there's nothing here.", Toast.LENGTH_LONG).show();
+                    action_label.setText("oh oh, there's nothing here.");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case 1:
-                    Toast.makeText(this, "Ghost Attack! You lost " + msg_code.getOption() + "$!", Toast.LENGTH_LONG).show();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            // UI code goes here
-                            bam_img.setVisibility(View.VISIBLE);
-                            handler.postDelayed(hideBAM, 1000);
-                        }
-                    });
+                    action_label.setText("Ghost Attack! You lost " + msg_code.getOption() + "$!");
+                    handler.postDelayed(emptyActionLabel, 1000);
+                    bam_img.setVisibility(View.VISIBLE);
+                    handler.postDelayed(hideBAM, 1000);
 
                     break;
                 case 2:
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            // UI code goes here
-                            pow_img.setVisibility(View.VISIBLE);
-                            handler.postDelayed(hidePOW, 1000);
-                        }
-                    });
-
-                    Toast.makeText(this, "Ouch!", Toast.LENGTH_LONG).show();
+                    action_label.setText("Ouch!");
+                    handler.postDelayed(emptyActionLabel, 1000);
+                    pow_img.setVisibility(View.VISIBLE);
+                    handler.postDelayed(hidePOW, 1000);
                     break;
                 case 3:
-                    Toast.makeText(this, "You have found a key! Yay!", Toast.LENGTH_LONG).show();
+                    action_label.setText("You have found a key! Yay!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case 4:
-                    Toast.makeText(this, "You have found " + msg_code.getOption() + "$! You are filthy rich now!", Toast.LENGTH_LONG).show();
+                    action_label.setText("You have found " + msg_code.getOption() + "$! You are filthy rich now!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case 5:
-                    Toast.makeText(this, "Jackpot! " + msg_code.getOption() + "$ and a key!", Toast.LENGTH_LONG).show();
+                    action_label.setText("Jackpot! " + msg_code.getOption() + "$ and a key!");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
                 case 7:
-                    Toast.makeText(this, "Your team won this game! Congratulations!", Toast.LENGTH_LONG).show();
+                    action_label.setText("Back in game area");
+                    handler.postDelayed(emptyActionLabel, 1000);
                     break;
             }
         }
-
     }
 
     public void initializeGhosts(List<Ghost> ghosts) {
