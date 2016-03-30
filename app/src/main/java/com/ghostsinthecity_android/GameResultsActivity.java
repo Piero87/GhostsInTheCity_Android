@@ -72,8 +72,8 @@ public class GameResultsActivity extends Activity {
 
         for (Player p : players) {
             if (p.getUid().equals(my_uid)) {
-                lbl_coin.setText(p.getGold());
-                lbl_key.setText(p.getKeys().size());
+                lbl_coin.setText(Integer.toString(p.getGold()));
+                lbl_key.setText(Integer.toString(p.getKeys().size()));
                 if (p.getTeam() == winner_team) {
                     lbl_result.setText("YOUR TEAM WON");
                     lbl_comment.setText("now nothing is strange in the neighborhood");
