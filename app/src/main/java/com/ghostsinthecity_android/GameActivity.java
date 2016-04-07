@@ -102,6 +102,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     private static final String TAG = "Ghost_GameActivity";
 
+    /**
+     *
+     * Default OnCreate method of Android, initialize main component
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -189,7 +195,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         detector = new SimpleGestureFilter(this,this);
     }
 
-
+    /**
+     * Default onResume method of Android, that will be called when the view appear
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -199,6 +207,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * LocationEvent listener method that notify when the gps position change
+     *
+     * @param location Location Entity
+     */
     @Override
     public void updateLocation(Location location) {
 
@@ -218,6 +231,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Called when a swipe is detected
+     *
+     * @param direction this is the direction of the swipe
+     */
     @Override
     public void onSwipe(int direction) {
 
@@ -243,6 +261,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Called when a double tap on the screen is detected
+     */
     @Override
     public void onDoubleTap() {
 
@@ -256,6 +277,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Default method of the touch event
+     * @param me
+     * @return
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent me) {
         // Call onTouchEvent of SimpleGestureFilter class
@@ -264,6 +290,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         return super.dispatchTouchEvent(me);
     }
 
+    /**
+     * Listener method called when a BeyondObject is touched
+     * @param beyondarObjects
+     */
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         // The first element in the array belongs to the closest BeyondarObject
@@ -271,6 +301,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
     }
 
 
+    /**
+     * Update HUD info player
+     * @param player
+     */
     public void updateHUD(final Player player) {
 
         runOnUiThread(new Runnable() {
@@ -284,6 +318,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
     }
 
+    /**
+     * Called when the game is in a started status
+     */
     public void startGame() {
 
         Log.d(TAG,"GAME STARTED");
@@ -321,6 +358,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         ConnectionManager.getInstance().sendMessage(new Gson().toJson(pos_update));
     }
 
+    /**
+     * Called when the game is in a waiting status
+     */
     public void waitingGame() {
 
         Log.d(TAG, "GAME WAITING");
@@ -331,6 +371,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.clearWorld();
     }
 
+    /**
+     * Called when the game is in a paused status
+     */
     public void pausedGame() {
 
         Log.d(TAG, "GAME PAUSED");
@@ -341,6 +384,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.clearWorld();
 
     }
+
+    /**
+     * Called when the game is finished
+     */
     public void gameFinished() {
 
         Log.d(TAG, "GAME FINISHED");
@@ -351,6 +398,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.clearWorld();
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when GameStatus change
+     *
+     * @param game Game Entity
+     */
     @Override
     public void gameStatusChanged(final Game game) {
 
@@ -377,6 +430,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         });
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player position change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerPosition(Player player) {
 
@@ -416,6 +475,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when a player info change
+     *
+     * @param player Player Entity
+     */
     @Override
     public void updatePlayerInfo(Player player) {
 
@@ -427,6 +492,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible players around player
+     *
+     * @param players Trap Entity
+     */
     @Override
     public void updateVisiblePlayers(List<Player> players) {
 
@@ -446,6 +516,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when ghosts position change
+     * @param ghosts Ghost List Entity
+     */
     @Override
     public void updateGhostsPositions(List<Ghost> ghosts) {
 
@@ -465,6 +540,12 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     *
+     * GameEvent listener method that notify when player position change and give the visible treasures around player
+     *
+     * @param treasures Treasures List Entity
+     */
     @Override
     public void updateTreasures(List<Treasure> treasures) {
 
@@ -483,6 +564,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * GameEvent listener method that notify when a new trap is added
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void addTrap(Trap trap) {
 
@@ -495,6 +581,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * GameEvent listener method that notify when a trap is activated
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void activateTrap(Trap trap) {
 
@@ -525,6 +616,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * GameEvent listener method that notify when a trap removed
+     *
+     * @param trap Trap Entity
+     */
     @Override
     public void removeTrap(Trap trap) {
 
@@ -555,6 +651,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * GameEvent listener method that notify when player position change and give the visible traps around player
+     *
+     * @param traps Trap Entity
+     */
     @Override
     public void updateVisibleTraps(List<Trap> traps) {
 
@@ -573,6 +674,11 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         initializeTraps(traps);
     }
 
+    /**
+     * GameEvent listener method that notify when show a info message
+     *
+     * @param msg_code MessageCode Entity
+     */
     @Override
     public void showMessage(MessageCode msg_code) {
 
@@ -630,6 +736,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Iterate the ghosts list and create GeoObject and add to the world
+     * @param ghosts List of Ghost Entity
+     */
     public void initializeGhosts(List<Ghost> ghosts) {
 
         currentGame.setGhosts(ghosts);
@@ -686,6 +796,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Iterate the treasures list and create GeoObject and add to the world
+     * @param treasures
+     */
     public void initializeTreasures(List<Treasure> treasures) {
 
         currentGame.setTreasures(treasures);
@@ -700,6 +814,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Iterate the traps list and call initialize method to create the GeoObject and add to the world
+     * @param traps
+     */
     public void initializeTraps(List<Trap> traps) {
 
         currentGame.setTraps(traps);
@@ -710,6 +828,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Create the GeoObject trap and add to the world
+     * @param trap
+     */
     public void initializeTrap(Trap trap) {
 
         GeoObject trap_obj = new GeoObject(1l);
@@ -719,6 +841,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.addBeyondarObject(trap_obj, WorldObjectType.TRAP);
     }
 
+    /**
+     * Create the GeoObject player and add to the world
+     * @param player
+     */
     public void initializePlayer(Player player) {
 
         GeoObject player_obj = new GeoObject(1l);
@@ -728,6 +854,10 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         world.addBeyondarObject(player_obj, WorldObjectType.PLAYER);
     }
 
+    /**
+     * Iterate the players list and call initialize method to create the GeoObject and add to the world
+     * @param players
+     */
     public void initializePlayers(List<Player> players) {
 
         currentGame.setPlayers(players);
@@ -740,6 +870,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     }
 
+    /**
+     * Runnable method to empty the label
+     */
     private Runnable emptyActionLabel = new Runnable() {
         @Override
         public void run() {
@@ -747,6 +880,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     };
 
+    /**
+     * Runnable method to hide the image
+     */
     private Runnable hideBAM = new Runnable() {
         @Override
         public void run() {
@@ -754,6 +890,9 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
         }
     };
 
+    /**
+     * Runnable method to hide the image
+     */
     private Runnable hidePOW = new Runnable() {
         @Override
         public void run() {
@@ -765,20 +904,32 @@ public class GameActivity extends FragmentActivity implements OnClickBeyondarObj
 
 
 
-    /*
-    NON USATI IN QUESTA VISTA MA NON C'E' MODO DI METTERE OPZIONALI QUINDI VANNO MESSI
-    SE NO DA ERRORE
+    /**
+     * GameEvent listener method that it's called when the websocket connect to the server.
+     * Then open the WaitingGPSActivity.
      */
     @Override
     public void connected() {
 
     }
 
+    /**
+     *
+     * GameEvent listener method to open GameActivity view
+     *
+     * @param games_list Game List Entity
+     */
     @Override
     public void refreshGameList(Game[] games_list) {
 
     }
 
+    /**
+     *
+     * GameEvent listener method to open GameActivity view
+     *
+     * @param game Game Entity
+     */
     @Override
     public void openGame(Game game) {
 
